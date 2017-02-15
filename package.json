@@ -4,7 +4,8 @@
   "description": "Get a reminder of links you've favorited on Twitter",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "Nick White",
   "license": "Apache-2.0",
