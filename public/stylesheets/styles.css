@@ -1,0 +1,16 @@
+body {
+    padding-top: 60px;
+}
+
+div.content {
+    overflow: auto;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+.submit-result {
+    display: none;
+    margin-left: 10px;
+}

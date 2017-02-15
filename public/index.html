@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>LikeLater</title>
+	<link href="stylesheets/styles.css" rel="stylesheet">
+
+  <!-- JQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+  <!-- Bootstrap: Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <!-- Bootstrap: Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+  <!-- Bootstrap: Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  <!-- Form Validation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.8/validator.min.js"></script>
+
+  <!-- Javascript -->
+  <script src="javascripts/script.js"></script>
+
+</head>
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">LikeLater</a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Sign Up</a></li>
+					<li><a href="#about">About</a></li>
+					<li><a href="#contact">Contact Us</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+  <div class="container" role="main">
+    <div class="jumbotron">
+      <div class="content">
+        <div class="col-sm-12">
+          <h1>Sign Up</h1>
+        </div>
+        <form id="signupForm" data-toggle="validator" onsubmit="addUser();return false;">
+          <div class="form-group col-sm-6">
+            <label for="handle">Twitter Handle</label>
+            <div class="input-group">
+              <div class="input-group-addon">@</div>
+              <input type="text" class="form-control" id="handle" required placeholder="likelater" pattern="[A-z0-9_]+">
+            </div>
+          </div>
+          <div class="form-group col-sm-6">
+            <label for="email">Email Address</label>
+            <input type="email" class="form-control" id="email" required placeholder="info@likelater.io" pattern="[A-z0-9._%+-]+@[A-z0-9.-]+\.[A-z]{2,}">
+          </div>
+          <div class="form-group col-sm-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <span class="submit-result" id="submitResultMessage"></span>
+          </div>
+          <div class="form-group col-sm-12">
+            <a onclick="popupUnsubscribe();">Unsubscribe and no longer receive daily emails</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+</body>
