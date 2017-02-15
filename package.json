@@ -7,5 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nick White",
-  "license": "ISC"
+  "license": "Apache-2.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nick41496/likelater.git"
+  },
+  "dependencies": {
+    "express": "^4.14.1"
+  }
 }
