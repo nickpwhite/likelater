@@ -15,6 +15,7 @@
     "url": "https://github.com/nick41496/likelater.git"
   },
   "dependencies": {
-    "express": "^4.14.1"
+    "express": "^4.14.1",
+    "pg": "4.x"
   }
 }

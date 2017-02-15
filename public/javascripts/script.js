@@ -1,12 +1,20 @@
+'use strict';
+
+const pg = require('pg');
+
 getUsers = function (callback) {
-    $.ajax('/users', {
-        dataType: 'json',
-        method: 'GET',
-        success: function (response) {
-            callback(response);
-        }
+    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+        client.query('SELECT * from users', (err, result) => {
+            done(); // releases the client back to the pool
+            
+            if (err) {
+                console.error(err);
+                return callback(err);
+            }
+            return callback(null, result);
+        });
     });
-}
+};
 
 postUser = function (email_address, screen_name, callback) {
     $.ajax('/users', {
@@ -30,20 +38,24 @@ addUser = function () {
     var email = $('#email')[0].value;
     var exists = false;
 
-    getUsers(function (users) {
-        users.forEach(function (user) {
-            if (user.screen_name === handle && user.email_address === email) {
-                exists = true;
-            }
-        });
-
-        if (exists) {
-            $('#submitResultMessage').text(email + " is already receiving email alerts for @" + handle);
-        } else {
-            postUser(email, handle, function (response) {
-                $('#submitResultMessage').text("Email alerts successfully enabled");
-            });
+    getUsers(function (err, users) {
+        if (err) {
+            throw err;
         }
-        $('#submitResultMessage').show();
-    });
+        console.log(users);
+        //users.forEach(function (user) {
+            //if (user.screen_name === handle && user.email_address === email) {
+                //exists = true;
+            //}
+        //});
+
+        //if (exists) {
+            //$('#submitResultMessage').text(email + " is already receiving email alerts for @" + handle);
+        //} else {
+            //postUser(email, handle, function (response) {
+                //$('#submitResultMessage').text("Email alerts successfully enabled");
+            //});
+        //}
+        //$('#submitResultMessage').show();
+    //});
 }
