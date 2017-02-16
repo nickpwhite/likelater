@@ -5,10 +5,10 @@ function getUsers(callback) {
         dataType: 'json',
         method: 'GET',
         success: (response) => {
-            callback(response);
+            callback(null, response);
         },
-        error: (response) => {
-            callback(response);
+        error: (error) => {
+            callback(error, null);
         }
     });
 };
