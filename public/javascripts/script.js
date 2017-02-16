@@ -1,6 +1,6 @@
 'use strict';
 
-getUsers = function (callback) {
+function getUsers(callback) {
     $.ajax('/users', {
         dataType: 'json',
         method: 'GET',
@@ -13,7 +13,7 @@ getUsers = function (callback) {
     });
 };
 
-postUser = function (email_address, screen_name, callback) {
+function postUser(email_address, screen_name, callback) {
     $.ajax('/users', {
         data: {
             email_address: email_address,
@@ -30,7 +30,7 @@ postUser = function (email_address, screen_name, callback) {
     });
 };
 
-addUser = function () {
+function addUser() {
     var handle = $('#handle')[0].value;
     var email = $('#email')[0].value;
     var exists = false;
