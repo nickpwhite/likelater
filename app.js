@@ -19,7 +19,7 @@ app.get('/users', (req, res) => {
             console.error(err);
             return;
         }
-        console.log(users);
+        res.json(users);
     });
 });
 
