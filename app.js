@@ -36,7 +36,7 @@ function getUsers (callback) {
                 console.error(err);
                 return callback(err);
             }
-            return callback(null, result);
+            return callback(null, result.rows);
         });
     });
 };
