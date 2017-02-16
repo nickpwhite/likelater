@@ -31,7 +31,7 @@ postUser = function (email_address, screen_name, callback) {
             callback(response);
         }
     });
-}
+};
 
 addUser = function () {
     var handle = $('#handle')[0].value;
@@ -58,4 +58,5 @@ addUser = function () {
         //}
         //$('#submitResultMessage').show();
     //});
-}
+    });
+};
