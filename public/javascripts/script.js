@@ -1,18 +1,15 @@
 'use strict';
 
-const pg = require('pg');
-
 getUsers = function (callback) {
-    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        client.query('SELECT * from users', (err, result) => {
-            done(); // releases the client back to the pool
-            
-            if (err) {
-                console.error(err);
-                return callback(err);
-            }
-            return callback(null, result);
-        });
+    $.ajax('/users', {
+        dataType: 'json',
+        method: 'GET',
+        success: (response) => {
+            callback(response);
+        },
+        error: (response) => {
+            callback(response);
+        }
     });
 };
 
