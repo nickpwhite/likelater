@@ -28,9 +28,7 @@ app.listen(app.get('port'), () => {
 });
 
 function getUsers (callback) {
-    console.log(process.env.DATABASE_URL);
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        console.log(err);
         client.query('SELECT * from users', (err, result) => {
             done(); // releases the client back to the pool
 
