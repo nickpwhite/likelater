@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
+    console.log('users');
     getUsers(null, (err, users) => {
         if (err) {
             console.error(err);
@@ -31,6 +32,7 @@ app.post('/users', (req, res) => {
 });
 
 app.get('/users?email=:email', (req, res) => {
+    console.log('users?email');
     console.log(req.params.email);
     getUsers(req.params.email, (err, users) => {
         if (err) {
