@@ -13,19 +13,19 @@ app.get('/', (req, res) => {
     res.sendFile('index.html');
 });
 
-app.route('/users')
-    .get((req, res) => {
-        getUsers(null, (err, users) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            res.json(users);
-        });
-    })
-    .post((req, res) => {
-        console.log(req);
+app.get('/users', (req, res) => {
+    getUsers(null, (err, users) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        res.json(users);
     });
+});
+    
+app.post('/users', (req, res) => {
+    console.log(req);
+});
 
 app.get('/users?email=:email', (req, res) => {
     getUsers(req.params.email, (err, users) => {

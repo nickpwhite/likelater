@@ -53,7 +53,6 @@ function addUser() {
         if (err) {
             throw err;
         }
-        console.log(user[0]);
         if (user && user[0].handles.includes(handle)) {
             exists = true;
         }
