@@ -27,19 +27,31 @@ function getUser(email, callback) {
     });
 };
 
-function postUser(email, handle, callback) {
+function postUser(user, callback) {
     $.ajax('/users', {
-        data: {
-            email: email,
-            handle: handle
-        },
+        data: user,
         dataType: 'json',
         method: 'POST',
-        success: function (response) {
-            callback(response);
+        success: (response) => {
+            callback(null, response);
         },
-        error: function (response) {
-            callback(response);
+        error: (error) => {
+            callback(error, null);
+        }
+    });
+};
+
+function putUser(user, callback) {
+    const encoded_email = encodeURIComponent(user.email);
+    $.ajax(`/users/${encoded_email}`, {
+        data: user,
+        dataType: 'json',
+        method: 'POST',
+        success: (response) => {
+            callback(null, response);
+        },
+        error: (error) => {
+            callback(error, null);
         }
     });
 };
@@ -47,21 +59,25 @@ function postUser(email, handle, callback) {
 function addUser() {
     var handle = $('#handle')[0].value;
     var email = $('#email')[0].value;
-    var exists = false;
 
     getUser(email, function (err, user) {
         if (err) {
             throw err;
         }
-        console.log(user);
-        if (user && user[0].handles.includes(handle)) {
-            exists = true;
-        }
 
-        if (exists) {
+        if (user && user.handles.includes(handle)) {
             $('#submitResultMessage').text(email + " is already receiving email alerts for @" + handle);
+        } else if (user) {
+            user.handles.push(handle);
+            putUser(user, (response) => {
+                $('#submitResultMessage').text("Email alerts successfully enabled");
+            });
         } else {
-            postUser(email, handle, function (response) {
+            user = {
+                email: email,
+                handles: [handle]
+            }
+            postUser(user, (response) => {
                 $('#submitResultMessage').text("Email alerts successfully enabled");
             });
         }

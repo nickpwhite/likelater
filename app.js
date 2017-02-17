@@ -16,17 +16,26 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
+    console.log(req.query.email);
     getUsers(req.query.email, (err, users) => {
         if (err) {
             console.error(err);
             return;
         }
-        res.json(users);
+        if (req.query.email && users[0]) {
+            res.json(users[0]);
+        } else {
+            res.json(users);
+        }
     });
 });
     
 app.post('/users', (req, res) => {
-    console.log(req.body);
+    console.log(`post ${req.body}`);
+});
+
+app.put('/users/:email', (req, res) => {
+    console.log(`put ${req.body}`);
 });
 
 app.listen(app.get('port'), () => {
