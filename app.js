@@ -16,7 +16,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-    console.log(req.query.email);
     getUsers(req.query.email, (err, users) => {
         if (err) {
             console.error(err);
@@ -24,8 +23,8 @@ app.get('/users', (req, res) => {
         }
         if (req.query.email && users[0]) {
             res.json(users[0]);
-        } else {
-            res.json(users);
+        } else if (req.query.email) {
+            res.json(null);
         }
     });
 });

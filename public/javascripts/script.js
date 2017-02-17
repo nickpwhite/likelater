@@ -66,7 +66,7 @@ function addUser() {
         }
 
         console.log(user);
-        if (user && user.length > 0 && user.handles.includes(handle)) {
+        if (user && user.handles.includes(handle)) {
             $('#submitResultMessage').text(email + " is already receiving email alerts for @" + handle);
         } else if (user) {
             user.handles.push(handle);
