@@ -24,7 +24,11 @@ app.route('/users')
         });
     })
     .post((req, res) => {
-        console.log(req.json);
+        console.log(req.body);
+
+        req.on('data', (chunk) => {
+            console.log(chunk);
+        });
     });
 
 app.get('/users?email=:email', (req, res) => {
