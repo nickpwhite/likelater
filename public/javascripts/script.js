@@ -53,6 +53,7 @@ function addUser() {
         if (err) {
             throw err;
         }
+        self.log(user);
         if (user && user[0].handles.includes(handle)) {
             exists = true;
         }

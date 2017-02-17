@@ -27,6 +27,7 @@ app.get('/users', (req, res) => {
     
 app.post('/users', (req, res) => {
     console.log(req.body);
+    
 });
 
 app.get('/users?email=:email', (req, res) => {
@@ -48,6 +49,7 @@ function getUsers (email, callback) {
     if (email) {
         query += ` WHERE email = \'${email}\'`; 
     }
+    self.log(query);
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         client.query(query, (err, result) => {
             done(); // releases the client back to the pool
