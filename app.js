@@ -1,5 +1,6 @@
 'use strict';
 
+const body_parser = require('body-parser');
 const express = require('express');
 const pg = require('pg');
 
@@ -8,6 +9,7 @@ const app = express();
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
+app.use(body_parser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     res.sendFile('index.html');
@@ -24,7 +26,7 @@ app.get('/users', (req, res) => {
 });
     
 app.post('/users', (req, res) => {
-    console.log(req);
+    console.log(req.body);
 });
 
 app.get('/users?email=:email', (req, res) => {
