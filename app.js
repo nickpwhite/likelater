@@ -51,7 +51,6 @@ app.listen(app.get('port'), () => {
 });
 
 function getUsers(email, callback) {
-    console.log(email);
     let query = 'SELECT * from users';
     if (email) {
         query += ` WHERE email = \'${email}\';`; 
@@ -70,11 +69,24 @@ function getUsers(email, callback) {
 };
 
 function addUser(user, callback) {
-    console.log(user);
     let query = `INSERT INTO users (email, handles, daily, active)
         VALUES ($1, $2, TRUE, TRUE);`;
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         client.query(query, [ user.email, user.handles ], (err, result) => {
+            done();
+
+            if (err) return callback(err);
+
+            console.log(result);
+            return callback(null, result);
+        });
+    });
+};
+
+function updateUser(user, callback) {
+    let query = `UPDATE users SET handles = $1 WHERE email = $2;`;
+    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+        client.query(query, [ user.handles, user.email ], (err, result) => {
             done();
 
             if (err) return callback(err);
