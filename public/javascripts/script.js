@@ -46,7 +46,7 @@ function putUser(user, callback) {
     $.ajax(`/users/${encoded_email}`, {
         data: user,
         dataType: 'json',
-        method: 'POST',
+        method: 'PUT',
         success: (response) => {
             callback(null, response);
         },
