@@ -25,12 +25,21 @@ app.get('/users', (req, res) => {
             res.json(users[0]);
         } else if (req.query.email) {
             res.json(null);
+        } else {
+            res.json(users);
         }
     });
 });
     
 app.post('/users', (req, res) => {
     console.log(`post ${req.body}`);
+    addUser(req.body, (err, result) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        res.json({});
+    });
 });
 
 app.put('/users/:email', (req, res) => {
@@ -41,22 +50,37 @@ app.listen(app.get('port'), () => {
     console.log(`Node app is running on port ${app.get('port')}`);
 });
 
-function getUsers (email, callback) {
+function getUsers(email, callback) {
     console.log(email);
     let query = 'SELECT * from users';
     if (email) {
-        query += ` WHERE email = \'${email}\'`; 
+        query += ` WHERE email = \'${email}\';`; 
+    } else {
+        query += ';';
     }
-    console.log(query);
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         client.query(query, (err, result) => {
             done(); // releases the client back to the pool
 
-            if (err) {
-                console.error(err);
-                return callback(err);
-            }
+            if (err) return callback(err);
+
             return callback(null, result.rows);
+        });
+    });
+};
+
+function addUser(user, callback) {
+    console.log(user);
+    let query = `INSERT INTO users (email, handles, daily, active)
+        VALUES (${user.email}, ${user.handles}, TRUE, TRUE);`;
+    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+        client.query(query, (err, result) => {
+            done();
+
+            if (err) return callback(err);
+
+            console.log(result);
+            return callback(null, result);
         });
     });
 };
