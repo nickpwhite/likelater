@@ -44,6 +44,13 @@ app.post('/users', (req, res) => {
 
 app.put('/users/:email', (req, res) => {
     console.log(`put ${req.body}`);
+    updateUser(req.body, (err, result) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        res.json({});
+    });
 });
 
 app.listen(app.get('port'), () => {
