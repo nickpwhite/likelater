@@ -31,6 +31,7 @@ app.post('/users', (req, res) => {
 });
 
 app.get('/users?email=:email', (req, res) => {
+    console.log('getUser');
     getUsers(req.params.email, (err, users) => {
         if (err) {
             console.error(err);
@@ -45,6 +46,7 @@ app.listen(app.get('port'), () => {
 });
 
 function getUsers (email, callback) {
+    console.log(email);
     let query = 'SELECT * from users';
     if (email) {
         query += ` WHERE email = \'${email}\'`; 
