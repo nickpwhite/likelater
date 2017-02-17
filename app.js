@@ -43,8 +43,7 @@ app.post('/users', (req, res) => {
 });
 
 app.put('/users/:email', (req, res) => {
-    console.log(`put ${req.body}`);
-    updateUser(req.body, (err, result) => {
+    updateUser(req.params.email, req.body, (err, result) => {
         if (err) {
             console.error(err);
             return;
@@ -90,10 +89,10 @@ function addUser(user, callback) {
     });
 };
 
-function updateUser(user, callback) {
+function updateUser(email, user, callback) {
     let query = `UPDATE users SET handles = $1 WHERE email = $2;`;
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        client.query(query, [ user.handles, user.email ], (err, result) => {
+        client.query(query, [ user.handles, email ], (err, result) => {
             done();
 
             if (err) return callback(err);
