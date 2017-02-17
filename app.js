@@ -49,7 +49,7 @@ function getUsers (email, callback) {
     if (email) {
         query += ` WHERE email = \'${email}\'`; 
     }
-    self.log(query);
+    console.log(query);
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         client.query(query, (err, result) => {
             done(); // releases the client back to the pool
