@@ -14,7 +14,17 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-    getUsers((err, users) => {
+    getUsers(null, (err, users) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        res.json(users);
+    });
+});
+
+app.get('/users?email=:email', (req, res) => {
+    getUsers(req.params.email, (err, users) => {
         if (err) {
             console.error(err);
             return;
@@ -27,9 +37,13 @@ app.listen(app.get('port'), () => {
     console.log(`Node app is running on port ${app.get('port')}`);
 });
 
-function getUsers (callback) {
+function getUsers (email, callback) {
+    let query = 'SELECT * from users';
+    if (email) {
+        query += ` WHERE email = \'${email}\'`; 
+    }
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        client.query('SELECT * from users', (err, result) => {
+        client.query(query, (err, result) => {
             done(); // releases the client back to the pool
 
             if (err) {

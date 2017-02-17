@@ -13,11 +13,25 @@ function getUsers(callback) {
     });
 };
 
-function postUser(email_address, screen_name, callback) {
+function getUser(email, callback) {
+    const encoded_email = encodeURIComponent(email);
+    $.ajax(`/users?email=${encoded_email}`, {
+        dataType: 'json',
+        method: 'GET',
+        success: (response) => {
+            callback(null, response)
+        },
+        error: (error) => {
+            callback(error, null);
+        }
+    });
+};
+
+function postUser(email, handle, callback) {
     $.ajax('/users', {
         data: {
-            email_address: email_address,
-            screen_name: screen_name
+            email: email,
+            handle: handle
         },
         dataType: 'json',
         method: 'POST',
@@ -35,25 +49,22 @@ function addUser() {
     var email = $('#email')[0].value;
     var exists = false;
 
-    getUsers(function (err, users) {
+    getUser(email, function (err, user) {
         if (err) {
             throw err;
         }
-        console.log(users);
-        //users.forEach(function (user) {
-            //if (user.screen_name === handle && user.email_address === email) {
-                //exists = true;
-            //}
-        //});
+        console.log(user);
+        if (user && user.handles.includes(handle)) {
+            exists = true;
+        }
 
-        //if (exists) {
-            //$('#submitResultMessage').text(email + " is already receiving email alerts for @" + handle);
-        //} else {
-            //postUser(email, handle, function (response) {
-                //$('#submitResultMessage').text("Email alerts successfully enabled");
-            //});
-        //}
-        //$('#submitResultMessage').show();
-    //});
+        if (exists) {
+            $('#submitResultMessage').text(email + " is already receiving email alerts for @" + handle);
+        } else {
+            postUser(email, handle, function (response) {
+                $('#submitResultMessage').text("Email alerts successfully enabled");
+            });
+        }
+        $('#submitResultMessage').show();
     });
 };
