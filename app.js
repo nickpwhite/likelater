@@ -16,8 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/users', (req, res) => {
-    console.log('users');
-    getUsers(null, (err, users) => {
+    getUsers(req.query.email, (err, users) => {
         if (err) {
             console.error(err);
             return;
@@ -28,19 +27,6 @@ app.get('/users', (req, res) => {
     
 app.post('/users', (req, res) => {
     console.log(req.body);
-    
-});
-
-app.get('/users?email=:email', (req, res) => {
-    console.log('users?email');
-    console.log(req.params.email);
-    getUsers(req.params.email, (err, users) => {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        res.json(users);
-    });
 });
 
 app.listen(app.get('port'), () => {
