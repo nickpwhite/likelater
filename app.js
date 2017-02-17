@@ -24,7 +24,7 @@ app.route('/users')
         });
     })
     .post((req, res) => {
-        console.log(req);
+        console.log(req.json);
     });
 
 app.get('/users?email=:email', (req, res) => {
