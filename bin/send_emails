@@ -27,10 +27,11 @@ fs.readFile('../email_template.html', (err, email_template) => {
             _.forEach(users, (user) => {
                 _.forEach(user.handles, (handle) => {
                     let get_options;
+                    console.log(user.latest_tweet);
                     if (user.latest_tweet) {
                         get_options = {
                             screen_name: user.handle,
-                            since_id: user.latest_tweet
+                            since_id: user.latest_tweet,
                             count: '200'
                         }
                     } else {
