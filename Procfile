@@ -1,2 +1,2 @@
 web: node app.js
-/*worker: node index.js*/
+worker: node likelater.js
