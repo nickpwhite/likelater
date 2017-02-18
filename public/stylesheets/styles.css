@@ -1,5 +1,9 @@
 body {
-    padding-top: 60px;
+    padding: 60px 0 0 0;
+}
+
+h1 {
+    padding: 0 0 10px 0;
 }
 
 div.content {
@@ -24,9 +28,13 @@ a.anchor {
     width: 50%;
 }
 
+.submit {
+    float: right;
+}
+
 .submit-result {
     display: none;
-    margin-left: 10px;
+    margin: 0 10px 0 0;
 }
 
 .tweet {
