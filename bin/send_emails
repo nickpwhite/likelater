@@ -29,13 +29,13 @@ fs.readFile('../email_template.html', (err, email_template) => {
                     let get_options;
                     if (user.latest_tweet) {
                         get_options = {
-                            screen_name: user.handle,
+                            screen_name: handle,
                             since_id: user.latest_tweet,
                             count: '200'
                         }
                     } else {
                         get_options = {
-                            screen_name: user.handle,
+                            screen_name: handle,
                             count: '200'
                         }
                     }
