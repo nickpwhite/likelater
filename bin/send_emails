@@ -26,10 +26,18 @@ fs.readFile('../email_template.html', (err, email_template) => {
 
             _.forEach(users, (user) => {
                 _.forEach(user.handles, (handle) => {
-                    const get_options = {
-                        screen_name: user.handle,
-                        since_id: user.latest_tweet ? user.latest_tweet : '',
-                        count: '200'
+                    let get_options;
+                    if (user.latest_tweet) {
+                        get_options = {
+                            screen_name: user.handle,
+                            since_id: user.latest_tweet
+                            count: '200'
+                        }
+                    } else {
+                        get_options = {
+                            screen_name: user.handle,
+                            count: '200'
+                        }
                     }
 
                     twitter_client.get('favorites/list', get_options, (err, tweets) => {
