@@ -6,7 +6,7 @@ const handlebars = require('handlebars');
 const pg = require('pg');
 const twitter = require('twitter');
 
-const client = new twitter({
+const twitter_client = new twitter({
     consumer_key: process.env.CONSUMER_KEY,
     consumer_secret: process.env.CONSUMER_SECRET,
     bearer_token: process.env.BEARER_TOKEN
@@ -32,8 +32,7 @@ fs.readFile('../email_template.html', (err, email_template) => {
                         count: '200'
                     }
 
-                    console.log(client);
-                    client.get('favorites/list', get_options, (err, tweets) => {
+                    twitter_client.get('favorites/list', get_options, (err, tweets) => {
                         if (err) {
                             console.error(err);
                             return;
