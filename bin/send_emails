@@ -40,6 +40,8 @@ fs.readFile('../email_template.html', (err, email_template) => {
                         }
                     }
 
+                    console.log(twitter_client);
+
                     twitter_client.get('favorites/list', get_options, (err, tweets) => {
                         if (err) {
                             console.log('error');
