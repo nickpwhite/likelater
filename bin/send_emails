@@ -1,16 +1,46 @@
 #!/usr/bin/env node
 
+const _ = require('lodash');
+const fs = require('fs');
+const handlebars = require('handlebars');
 const pg = require('pg');
+const twitter = require('twitter');
 
-pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-    client.query('SELECT * from users WHERE active=TRUE', (err, result) => {
-        done();
+const client = new twitter({
+    consumer_key: process.env.CONSUMER_KEY,
+    consumer_secret: process.env.CONSUMER_SECRET,
+    bearer_token: process.env.BEARER_TOKEN
+});
 
-        if (err) {
-            console.error(err);
-            return;
-        }
+fs.readFile('../email_template.html', (err, email_template) => {
+    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+        client.query('SELECT * from users WHERE active=TRUE', (err, result) => {
+            done();
 
-        console.log(result);
+            if (err) {
+                console.error(err);
+                return;
+            }
+
+            const users = result.rows;
+
+            _.forEach(users, (user) => {
+                _.forEach(user.handles, (handle) => {
+                    const get_options = {
+                        screen_name: user.handle,
+                        since_id: user.latest_tweet,
+                        count: '200'
+                    }
+
+                    client.get('favorites/list', get_options, (err, tweets) => {
+                        if (err) {
+                            console.error(err);
+                            return;
+                        }
+                        console.log(tweets);
+                    });
+                });
+            });
+        });
     });
 });
