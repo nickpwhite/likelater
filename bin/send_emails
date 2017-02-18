@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+const pg = require('pg');
+
+pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+    client.query('SELECT * from users WHERE active=TRUE', (err, result) => {
+        done();
+
+        if (err) {
+            console.error(err);
+            return;
+        }
+
+        console.log(result);
+    });
+});
