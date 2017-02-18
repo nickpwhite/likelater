@@ -1,7 +1,7 @@
-var _ = require('lodash');
-var http = require('http');
-var nodemailer = require('nodemailer');
-var querystring = require('querystring');
+//var _ = require('lodash');
+//var http = require('http');
+//var nodemailer = require('nodemailer');
+//var querystring = require('querystring');
 var twitter = require('twitter');
 
 var client = new twitter({
