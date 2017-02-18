@@ -32,6 +32,7 @@ fs.readFile('../email_template.html', (err, email_template) => {
                         count: '200'
                     }
 
+                    console.log(client);
                     client.get('favorites/list', get_options, (err, tweets) => {
                         if (err) {
                             console.error(err);
