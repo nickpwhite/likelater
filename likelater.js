@@ -1,7 +1,7 @@
-//var _ = require('lodash');
-//var http = require('http');
-//var nodemailer = require('nodemailer');
-//var querystring = require('querystring');
+var _ = require('lodash');
+var http = require('http');
+var nodemailer = require('nodemailer');
+var querystring = require('querystring');
 var twitter = require('twitter');
 
 var client = new twitter({
@@ -10,11 +10,7 @@ var client = new twitter({
     bearer_token: process.env.BEARER_TOKEN
 });
 
-client.get('statuses/oembed', { url: 'https://twitter.com/elonmusk/status/832375525754626048', hide_media: true }).then((tweet) => {
-    console.log(tweet.html);
-});
-
-/*http.get('http://localhost:3000/users', (response) => {
+http.get('http://localhost:3000/users', (response) => {
     response.on('data', (users) => {
         users = JSON.parse(users);
         _.forEach(users, (user) => {
@@ -92,4 +88,3 @@ client.get('statuses/oembed', { url: 'https://twitter.com/elonmusk/status/832375
         });
     });
 });
-*/

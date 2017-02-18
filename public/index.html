@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <title>LikeLater</title>
-    <link href="stylesheets/styles.css" rel="stylesheet">
 
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -27,6 +26,9 @@
 
     <!-- Javascript -->
     <script src="javascripts/script.js"></script>
+
+    <!-- Styles -->
+    <link href="stylesheets/styles.css" rel="stylesheet">
 </head>
 <body>
 	<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -42,16 +44,16 @@
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="#">Sign Up</a></li>
-					<li><a href="#about">About</a></li>
-					<li><a href="#contact">Contact Us</a></li>
+					<li class="active"><a href="#" onclick="changeNav(event);">Sign Up</a></li>
+					<li><a href="#about" onclick="changeNav(event);">About</a></li>
+					<li><a href="#contact" onclick="changeNav(event);">Contact Us</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
   <div class="container-fluid" role="main">
-    <div class="jumbotron">
+    <div class="jumbotron odd">
       <div class="content">
         <div class="col-sm-12">
           <h1>Sign Up</h1>
@@ -79,26 +81,37 @@
     </div>
   </div>
 
-  <div class="container">
+  <div class="container-fluid">
       <div class="jumbotron">
           <div class="content">
               <a name="about" class="anchor"></a>
-              <h1>About Likelater</h1>
+              <span class="tweet col-sm-4">
+                  <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/SmartCity?src=hash">#SmartCity</a> data could improve as ppl become mobile sensors - reporting on traffic, air pollution, natural disasters <a href="https://t.co/POBBtHMEAW">https://t.co/POBBtHMEAW</a></p>&mdash; Ubuntu (@ubuntu) <a href="https://twitter.com/ubuntu/status/832884877250928642">February 18, 2017</a></blockquote>
+              </span>
+              <span class="tweet col-sm-4">
+                  <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Has this rolled out to enough locales to make your weekend travel a bit saner? <a href="https://t.co/j2B9bBOCXR">https://t.co/j2B9bBOCXR</a></p>&mdash; Ars Technica (@arstechnica) <a href="https://twitter.com/arstechnica/status/832998645905682432">February 18, 2017</a></blockquote>
+              </span>
+              <span class="tweet col-sm-4">
+                  <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Provided Dragon 2 demo missions go well, SpaceX is highly confident of being able to fly US astronauts in 2018 <a href="https://t.co/usUto6QSi7">https://t.co/usUto6QSi7</a></p>&mdash; Elon Musk (@elonmusk) <a href="https://twitter.com/elonmusk/status/832863988836814848">February 18, 2017</a></blockquote>
+              </span>
               <separator></separator>
               <span class="about">
                   <p>
-                  Sign up for Likelater and we will send you a reminder email every day containing all of the links contained in tweets that you have liked for the day. 
-                  </p>
-                  <p>
-                  It's that simple! 
+                  Sign up for Likelater and we will send you a reminder email every day containing all of the links in your liked tweets for the day. 
                   </p>
                   <p>
                   Click the unsubscribe link in any of the emails to remove yourself from our list, we'll be sorry to see you go!
                   </p>
               </span>
-              <span class="tweet">
-                  <blockquote class="twitter-tweet" data-cards="hidden"><p lang="en" dir="ltr">Daylight rocket launch &amp; landing at the Cape this weekend. Will be the 1st SpaceX flight from the Apollo launch pad. <a href="https://t.co/Vr5LQjYaPZ">https://t.co/Vr5LQjYaPZ</a></p>&mdash; Elon Musk (@elonmusk) <a href="https://twitter.com/elonmusk/status/832375525754626048">February 16, 2017</a></blockquote> 
-              </span>
+          </div>
+      </div>
+  </div>
+  <div class="container-fluid">
+      <div class="jumbotron odd">
+          <div class="content">
+              <a name="contact" class="anchor"></a>
+              <h1>Contact</h1>
+              <separator></separator>
           </div>
       </div>
   </div>

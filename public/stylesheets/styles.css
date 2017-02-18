@@ -22,10 +22,20 @@ a.anchor {
 }
 
 .about {
-    float: left;
     font-size: 16px;
-    padding: 10px 10px 0 0;
-    width: 50%;
+    padding: 20px 10px 0 0;
+}
+
+.container-fluid {
+    padding: 0 0 0 0;
+}
+
+.container-fluid .jumbotron {
+    border-radius: 0px;
+}
+
+.jumbotron.odd {
+    background-color: #fff;
 }
 
 .submit-btn {
@@ -39,6 +49,5 @@ a.anchor {
 }
 
 .tweet {
-    float: left;
-    width: 50%;
+    padding: 0 10px 0 0;
 }
