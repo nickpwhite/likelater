@@ -107,7 +107,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             console.error(err);
                             throw err;
                         }
-                        return user_callback();
+                        return user_callback(null);
                     });
                 });
             });
@@ -139,8 +139,6 @@ function update_latest(email, handles, callback) {
 }
 
 function send_email(email, message, callback) {
-    console.log(`to: ${email}`);
-    console.log(message);
     var mailOptions = {
         port: 465,
         host: "mail.privateemail.com",
@@ -160,6 +158,5 @@ function send_email(email, message, callback) {
         if (error) {
             return console.log(error);
         }
-        console.log(info);
     });
 };
