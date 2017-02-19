@@ -49,7 +49,7 @@ fs.readFile('../email_template.html', (err, email_template) => {
                         link_tweets = _.filter(tweets, (tweet) => {
                             console.log(tweet['entities']['urls']);
                             const urls = _.filter(tweet['entities']['urls'], (url) => {
-                                return /twitter\.com\/.*\/status\//.test(url);
+                                return !/twitter\.com\/.*\/status\//.test(url);
                             });
                             console.log(urls);
                             return urls.length > 0;
