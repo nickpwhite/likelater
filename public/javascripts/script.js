@@ -67,6 +67,7 @@ function addUser() {
 
         console.log(user);
         if (user && user.handles.find((each_handle) => {
+            console.log(each_handle === handle);
             return each_handle === handle;
         })) {
             $('#submitResultMessage').text(email + " is already receiving email alerts for @" + handle);
