@@ -63,7 +63,6 @@ fs.readFile('../email_template.html', (err, email_template) => {
                                     console.error(err);
                                     throw err;
                                 }
-                                console.log(tweet);
                                 tweet_htmls.push(tweet);
                             });
                         }, (err) => {
