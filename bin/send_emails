@@ -54,7 +54,6 @@ fs.readFile('../email_template.html', (err, email_template) => {
                         });
                         const tweet_htmls = [];
                         _.forEach(link_tweets, (tweet) => {
-                            console.log(`twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
                             twitter_client.get('statuses/oembed', {
                                 url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
                                 hide_media: true
@@ -63,6 +62,7 @@ fs.readFile('../email_template.html', (err, email_template) => {
                                     console.error(err);
                                     throw err;
                                 }
+                                console.log(tweet);
                                 tweet_htmls.push(tweet);
                             });
                         });
