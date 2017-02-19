@@ -10,10 +10,16 @@
 <body>
     <h1>Hello!</h1>
     <p>Here is your daily roundup of tweets with links.</p>
-    <h3>{{handle}}:</h3>
+    {{#accounts}}
+    {{#if new_tweets}}
+    <h3>@{{handle}}:</h3>
     <ul>
-        {{#tweets}}
+        {{tweets}}
         <li>{{{html}}}</li>
         {{/tweets}}
     </ul>
+    {{/accounts}}
+    {{^}}
+    <p>@{{handle}} doesn't have any new tweets that contain links. Check back tomorrow for some more tweets!</p>
+    {{/if}}
 </body>

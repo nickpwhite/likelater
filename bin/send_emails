@@ -26,7 +26,8 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         const users = result.rows;
 
         _.forEach(users, (user) => {
-            _.forEach(user.handles, (handle) => {
+            const accounts = [];
+            async.eachSeries(user.handles, (handle, callback) => {
                 let get_options;
                 if (user.latest_tweet) {
                     get_options = {
@@ -54,51 +55,60 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                         return urls.length > 0;
                     });
                     const tweet_htmls = [];
-                    if (link_tweets.length === 0) {
-                        fs.readFile('templates/no_link_template.html', (err, html) => {
-                            return sendEmail(user.email, html);
-                        });
-                    }
                     //update_latest(user.email, link_tweets[0].id_str, (err, result) => {
                         //if (err) throw err;
 
                         //console.log(result);
                         //return;
                     //});
-                    async.each(link_tweets, (tweet, callback) => {
+                    async.each(link_tweets, (tweet, html_callback) => {
                         twitter_client.get('statuses/oembed', {
                             url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
                             hide_media: true
                         }, (err, tweet) => {
                             if (err) {
                                 console.error(err);
-                                callback(err);
+                                html_callback(err);
                             }
                             tweet_htmls.push(tweet);
-                            callback(null);
+                            html_callback(null);
                         });
                     }, (err) => {
                         if (err) {
                             console.error(err);
                             throw err;
                         }
-                        fs.readFile('templates/email_template.html', 'utf8', (err, email_template) => {
-                            if (err) {
-                                console.error(err);
-                                throw err;
-                            }
-                            const template = handlebars.compile(email_template);
-                            const message = template({
-                                handle: handle,
-                                tweets: tweet_htmls
-                            });
-                            send_email(user.email, message, (err) => {
-                                if (err) {
-                                    console.error(err);
-                                    throw err;
-                                }
-                            });
-                        });
+                        const account = {
+                            handle: handle,
+                            tweets: tweet_htmls
+                        };
+                        if (tweets.length > 0) {
+                            account.new_tweets = true;
+                        } else {
+                            account.new_tweets = false;
+                        }
+                        accounts.push(account);
+                        return callback(null);
+                    });
+                });
+            }, (err) => {
+                if (err) {
+                    console.error(err);
+                    throw err;
+                }
+                if (accounts.length === 0) {
+                    fs.readFile('templates/no_link_template.html', (err, html) => {
+                        return sendEmail(user.email, html);
+                    });
+                }
+                fs.readFile('templates/email_template.html', 'utf8', (err, email_template) => {
+                    const template = handlebars.compile(email_template);
+                    const message = template({ accounts: accounts });
+                    send_email(user.email, message, (err) => {
+                        if (err) {
+                            console.error(err);
+                            throw err;
+                        }
                     });
                 });
             });
