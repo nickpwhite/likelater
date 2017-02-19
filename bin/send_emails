@@ -162,7 +162,9 @@ function send_email(email, message, callback) {
         html: message
     }, (error, info) => {
         if (error) {
-            return console.log(error);
+            return callback(error);
         }
+
+        return callback(null);
     });
 };
