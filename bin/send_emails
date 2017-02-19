@@ -128,6 +128,8 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
 function update_latest(email, handles, callback) {
     const query = 'UPDATE users SET handles = $1 WHERE email = $2;';
+    console.log(handles);
+    console.log(email);
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         client.query(query, [ handles, email ], (err, result) => {
             done();
