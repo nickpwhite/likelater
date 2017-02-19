@@ -40,16 +40,22 @@ fs.readFile('../email_template.html', (err, email_template) => {
                         }
                     }
 
-                    console.log(twitter_client);
-                    console.log(get_options);
-
                     twitter_client.get('favorites/list', get_options, (err, tweets) => {
                         if (err) {
                             console.log('error');
                             console.error(err);
                             return;
                         }
-                        console.log(tweets);
+                        link_tweets = _.filter(tweets, (tweet) => {
+                            console.log(tweet['entities']['urls']);
+                            const urls = _.filter(tweet['entities']['urls'], (url) => {
+                                return /twitter\.com\/.*\/status\//.test(url);
+                            });
+                            cosole.log(urls);
+                            return urls.length > 0;
+                        });
+
+                        console.log(link_tweets);
                     });
                 });
             });
