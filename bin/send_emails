@@ -58,10 +58,12 @@ fs.readFile('../email_template.html', (err, email_template) => {
                             twitter_client.get('statuses/oembed', {
                                 url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
                                 hide_media: true
-                            }).then((tweet) => {
-                                tweet_htmls.add(tweet);
-                            }).catch((error) => {
-                                console.log(error);
+                            }, (err, tweet) => {
+                                if (err) {
+                                    console.error(err);
+                                    throw err;
+                                }
+                                tweet_htmls.push(tweet);
                             });
                         });
                         console.log(tweet_htmls);
