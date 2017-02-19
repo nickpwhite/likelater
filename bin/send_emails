@@ -90,6 +90,6 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 });
 
 function send_email(email, message) {
-    cosnole.log(`to: ${email}`);
+    console.log(`to: ${email}`);
     console.log(message);
 };
