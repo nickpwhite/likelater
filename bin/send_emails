@@ -19,7 +19,6 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         done();
 
         if (err) {
-            console.log('error1');
             console.error(err);
             return;
         }
@@ -28,7 +27,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
         async.eachSeries(users, (user, user_callback) => {
             const accounts = [];
-            async.eachOfSeries(user.handles, (handle, i, handle_callback) => {
+            async.eachSeries(user.handles, (handle, handle_callback) => {
                 let get_options;
                 if (handle.latest_tweet) {
                     get_options = {
@@ -45,7 +44,6 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
                 twitter_client.get('favorites/list', get_options, (err, tweets) => {
                     if (err) {
-                        console.log(handle);
                         console.error(err);
                         return;
                     }
@@ -58,8 +56,6 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     const tweet_htmls = [];
                     if (link_tweets.length > 0) {
                         handle.latest_tweet = link_tweets[0].id_str;
-                        console.log(user);
-                        //users.handles[i].latest_tweet = link_tweets[0].id_str;
                     }
                     async.each(link_tweets, (tweet, html_callback) => {
                         twitter_client.get('statuses/oembed', {
@@ -108,7 +104,13 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             console.error(err);
                             throw err;
                         }
-                        return user_callback(null);
+                        update_latest(user.email, user.handles, (err) => {
+                            if (err) {
+                                console.error(err);
+                                return user_callback(err);
+                            }
+                            return user_callback();
+                        });
                     });
                 });
             });
