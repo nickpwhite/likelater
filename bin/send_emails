@@ -29,6 +29,8 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             const accounts = [];
             async.eachOfSeries(user.handles, (handle, i, handle_callback) => {
                 let get_options;
+                console.log(handle.latest_tweet);
+                console.log(!!handle.latest_tweet);
                 if (handle.latest_tweet) {
                     get_options = {
                         screen_name: handle,
@@ -45,7 +47,6 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                 console.log('getting likes');
                 twitter_client.get('favorites/list', get_options, (err, tweets) => {
                     if (err) {
-                        console.log('error');
                         console.error(err);
                         return;
                     }
