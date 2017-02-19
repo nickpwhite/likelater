@@ -15,7 +15,7 @@
     "url": "https://github.com/nick41496/likelater.git"
   },
   "dependencies": {
-    "async": "^2.1.4",
+    "async": "^2.1.5",
     "body-parser": "^1.16.1",
     "express": "^4.14.1",
     "handlebars": "^4.0.6",

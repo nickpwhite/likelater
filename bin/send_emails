@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const _ = require('lodash');
+const async = require('async');
 const fs = require('fs');
 const handlebars = require('handlebars');
 const pg = require('pg');
@@ -53,7 +54,7 @@ fs.readFile('../email_template.html', (err, email_template) => {
                             return urls.length > 0;
                         });
                         const tweet_htmls = [];
-                        _.forEach(link_tweets, (tweet) => {
+                        async.each(link_tweets, (tweet) => {
                             twitter_client.get('statuses/oembed', {
                                 url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
                                 hide_media: true
@@ -65,8 +66,13 @@ fs.readFile('../email_template.html', (err, email_template) => {
                                 console.log(tweet);
                                 tweet_htmls.push(tweet);
                             });
+                        }, (err) => {
+                            if (err) {
+                                console.error(err);
+                                throw err;
+                            }
+                            console.log(tweet_htmls);
                         });
-                        console.log(tweet_htmls);
                     });
                 });
             });
