@@ -29,6 +29,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             const accounts = [];
             async.eachSeries(user.handles, (handle, handle_callback) => {
                 let get_options;
+                console.log(handle.latest_tweet);
                 if (handle.latest_tweet) {
                     get_options = {
                         screen_name: handle.handle,
