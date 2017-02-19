@@ -42,6 +42,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     }
                 }
 
+                console.log('getting likes');
                 twitter_client.get('favorites/list', get_options, (err, tweets) => {
                     if (err) {
                         console.log('error');
@@ -58,6 +59,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     handle.latest_tweet = link_tweets[0].id_str;
                     //users.handles[i].latest_tweet = link_tweets[0].id_str;
                     async.each(link_tweets, (tweet, html_callback) => {
+                        console.log('getting embed status');
                         twitter_client.get('statuses/oembed', {
                             url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
                             hide_media: true
@@ -114,10 +116,10 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
     });
 });
 
-function update_latest(email, handle, latest_id, callback) {
-    const query = 'UPDATE users SET latest_id = $1 WHERE email = $2;';
+function update_latest(email, handles, callback) {
+    const query = 'UPDATE users SET handles = $1 WHERE email = $2;';
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        client.query(query, [ latest_id, email ], (err, result) => {
+        client.query(query, [ handles, email ], (err, result) => {
             done();
 
             if (err) return callback(err);
