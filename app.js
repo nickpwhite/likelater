@@ -77,6 +77,7 @@ function getUsers(email, callback) {
 function addUser(user, callback) {
     const query = `INSERT INTO users (email, handles, daily, active)
         VALUES ($1, $2, TRUE, TRUE);`;
+    console.log(user.handles);
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         client.query(query, [ user.email, user.handles ], (err, result) => {
             done();
