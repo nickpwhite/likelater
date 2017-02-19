@@ -54,13 +54,15 @@ fs.readFile('../email_template.html', (err, email_template) => {
                         });
                         const tweet_htmls = [];
                         _.forEach(link_tweets, (tweet) => {
+                            console.log(tweet);
                             twitter_client.get('statuses/oembed', {
-                                id: tweet.id,
+                                url: `twitter.com/${tweet.user.screen_name}/status/${tweet.id}`,
                                 hide_media: true
                             }).then((tweet) => {
                                 tweet_htmls.add(tweet);
                             });;
                         });
+                        console.log(tweet_htmls);
                     });
                 });
             });
