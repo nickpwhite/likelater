@@ -45,7 +45,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
                 twitter_client.get('favorites/list', get_options, (err, tweets) => {
                     if (err) {
-                        console.log('error2');
+                        console.log(handle);
                         console.error(err);
                         return;
                     }
