@@ -56,6 +56,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     const tweet_htmls = [];
                     handle.latest_tweet = link_tweets[0].id_str;
                     //users.handles[i].latest_tweet = link_tweets[0].id_str;
+                    console.log(link_tweets.length);
                     async.each(link_tweets, (tweet, html_callback) => {
                         console.log(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
                         twitter_client.get('statuses/oembed', {
