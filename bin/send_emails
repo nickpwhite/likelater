@@ -19,6 +19,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         done();
 
         if (err) {
+            console.log('error1');
             console.error(err);
             return;
         }
@@ -44,6 +45,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
                 twitter_client.get('favorites/list', get_options, (err, tweets) => {
                     if (err) {
+                        console.log('error2');
                         console.error(err);
                         return;
                     }
@@ -62,7 +64,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             hide_media: true
                         }, (err, tweet) => {
                             if (err) {
-                                console.log('error');
+                                console.log('error3');
                                 console.error(err);
                                 html_callback(err);
                             }
@@ -71,7 +73,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                         });
                     }, (err) => {
                         if (err) {
-                            console.log('error in callback');
+                            console.log('error4');
                             console.error(err);
                             throw err;
                         }
@@ -90,6 +92,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                 });
             }, (err) => {
                 if (err) {
+                    console.log('error5');
                     console.error(err);
                     throw err;
                 }
@@ -98,6 +101,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     const message = template({ accounts: accounts });
                     send_email(user.email, message, (err) => {
                         if (err) {
+                            cosnole.log('error6');
                             console.error(err);
                             throw err;
                         }
@@ -107,6 +111,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             });
         }, (err) => {
             if (err) {
+                console.log('error7');
                 console.log(err);
                 throw err;
             }
@@ -121,7 +126,10 @@ function update_latest(email, handles, callback) {
         client.query(query, [ handles, email ], (err, result) => {
             done();
 
-            if (err) return callback(err);
+            if (err) {
+                console.log(err);
+                return callback(err);
+            }
 
             return callback(null, result);
         });
