@@ -75,7 +75,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             console.error(err);
                             throw err;
                         }
-                        fs.readFile('../templates/email_template.html', (err, email_template) => {
+                        fs.readFile('templates/email_template.html', (err, email_template) => {
                             if (err) console.error(err);
                             console.log(email_template);
                             //const template = handlebars.compile(email_template);
