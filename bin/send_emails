@@ -13,69 +13,83 @@ const twitter_client = new twitter({
     bearer_token: process.env.BEARER_TOKEN
 });
 
-fs.readFile('../email_template.html', (err, email_template) => {
-    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        client.query('SELECT * from users WHERE active=TRUE', (err, result) => {
-            done();
+pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+    client.query('SELECT * from users WHERE active=TRUE', (err, result) => {
+        done();
 
-            if (err) {
-                console.error(err);
-                return;
-            }
+        if (err) {
+            console.error(err);
+            return;
+        }
 
-            const users = result.rows;
+        const users = result.rows;
 
-            _.forEach(users, (user) => {
-                _.forEach(user.handles, (handle) => {
-                    let get_options;
-                    if (user.latest_tweet) {
-                        get_options = {
-                            screen_name: handle,
-                            since_id: user.latest_tweet,
-                            count: '200'
-                        }
-                    } else {
-                        get_options = {
-                            screen_name: handle,
-                            count: '200'
-                        }
+        _.forEach(users, (user) => {
+            _.forEach(user.handles, (handle) => {
+                let get_options;
+                if (user.latest_tweet) {
+                    get_options = {
+                        screen_name: handle,
+                        since_id: user.latest_tweet,
+                        count: '200'
                     }
+                } else {
+                    get_options = {
+                        screen_name: handle,
+                        count: '200'
+                    }
+                }
 
-                    twitter_client.get('favorites/list', get_options, (err, tweets) => {
-                        if (err) {
-                            console.log('error');
-                            console.error(err);
-                            return;
-                        }
-                        link_tweets = _.filter(tweets, (tweet) => {
-                            const urls = _.filter(tweet['entities']['urls'], (url) => {
-                                return !/twitter\.com\/.*\/status\//g.test(url.expanded_url);
-                            });
-                            return urls.length > 0;
+                twitter_client.get('favorites/list', get_options, (err, tweets) => {
+                    if (err) {
+                        console.log('error');
+                        console.error(err);
+                        return;
+                    }
+                    link_tweets = _.filter(tweets, (tweet) => {
+                        const urls = _.filter(tweet['entities']['urls'], (url) => {
+                            return !/twitter\.com\/.*\/status\//g.test(url.expanded_url);
                         });
-                        const tweet_htmls = [];
-                        async.each(link_tweets, (tweet, callback) => {
-                            twitter_client.get('statuses/oembed', {
-                                url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
-                                hide_media: true
-                            }, (err, tweet) => {
-                                if (err) {
-                                    console.error(err);
-                                    callback(err);
-                                }
-                                tweet_htmls.push(tweet);
-                                callback(null);
-                            });
-                        }, (err) => {
+                        return urls.length > 0;
+                    });
+                    const tweet_htmls = [];
+                    if (link_tweets.length === 0) {
+                        fs.readFile('../templates/no_link_template.html', (err, html) => {
+                            return sendEmail(user.email, html);
+                        });
+                    }
+                    async.each(link_tweets, (tweet, callback) => {
+                        twitter_client.get('statuses/oembed', {
+                            url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
+                            hide_media: true
+                        }, (err, tweet) => {
                             if (err) {
                                 console.error(err);
-                                throw err;
+                                callback(err);
                             }
-                            console.log(tweet_htmls);
+                            tweet_htmls.push(tweet);
+                            callback(null);
+                        });
+                    }, (err) => {
+                        if (err) {
+                            console.error(err);
+                            throw err;
+                        }
+                        fs.readFile('../templates/email_template.html', (err, email_template) => {
+                            const template = handlebars.compile(email_template);
+                            const message = template(tweet_htmls);
+                            send_email(user.email, message);
+                            console.log(`sent all emails for ${user.email}`);
                         });
                     });
                 });
             });
+            console.log('sent all emails');
         });
     });
 });
+
+function send_email(email, message) {
+    cosnole.log(`to: ${email}`);
+    console.log(message);
+};
