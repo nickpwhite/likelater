@@ -81,7 +81,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             handle: handle.handle,
                             tweets: tweet_htmls
                         };
-                        if (tweets.length > 0) {
+                        if (tweet_htmls.length > 0) {
                             account.new_tweets = true;
                         } else {
                             account.new_tweets = false;
@@ -124,8 +124,6 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
 function update_latest(email, handles, callback) {
     const query = 'UPDATE users SET handles = $1 WHERE email = $2;';
-    console.log(handles);
-    console.log(email);
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         client.query(query, [ JSON.stringify(handles), email ], (err, result) => {
             done();
