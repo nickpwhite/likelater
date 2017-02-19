@@ -78,7 +78,10 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                         fs.readFile('templates/email_template.html', 'utf8', (err, email_template) => {
                             if (err) console.error(err);
                             const template = handlebars.compile(email_template);
-                            const message = template(tweet_htmls);
+                            const message = template({
+                                handle: handle,
+                                tweets: tweet_htmls
+                            });
                             send_email(user.email, message);
                         });
                     });
