@@ -45,6 +45,7 @@ a.anchor {
 .submit-result {
     display: none;
     float: right;
+    line-height: 2.5;
     margin: 0 10px 0 0;
 }
 

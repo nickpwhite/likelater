@@ -77,7 +77,7 @@ function addUser(user, callback) {
     const query = `INSERT INTO users (email, handles, daily, active)
         VALUES ($1, $2, TRUE, TRUE);`;
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        client.query(query, [ user.email, user.handles ], (err, result) => {
+        client.query(query, [ user.email, JSON.stringify(user.handles) ], (err, result) => {
             done();
 
             if (err) return callback(err);
@@ -90,7 +90,7 @@ function addUser(user, callback) {
 function updateUser(email, user, callback) {
     const query = `UPDATE users SET handles = $1 WHERE email = $2;`;
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        client.query(query, [ user.handles, email ], (err, result) => {
+        client.query(query, [ JSON.stringify(user.handles), email ], (err, result) => {
             done();
 
             if (err) return callback(err);
