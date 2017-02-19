@@ -96,11 +96,6 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     console.error(err);
                     throw err;
                 }
-                if (accounts.length === 0) {
-                    fs.readFile('templates/no_link_template.html', (err, html) => {
-                        return sendEmail(user.email, html);
-                    });
-                }
                 fs.readFile('templates/email_template.html', 'utf8', (err, email_template) => {
                     const template = handlebars.compile(email_template);
                     const message = template({ accounts: accounts });
