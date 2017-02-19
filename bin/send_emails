@@ -4,6 +4,7 @@ const _ = require('lodash');
 const async = require('async');
 const fs = require('fs');
 const handlebars = require('handlebars');
+const nodemailer = require('nodemailer');
 const pg = require('pg');
 const twitter = require('twitter');
 
@@ -54,10 +55,16 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     });
                     const tweet_htmls = [];
                     if (link_tweets.length === 0) {
-                        fs.readFile('../templates/no_link_template.html', (err, html) => {
+                        fs.readFile('templates/no_link_template.html', (err, html) => {
                             return sendEmail(user.email, html);
                         });
                     }
+                    //update_latest(user.email, link_tweets[0].id_str, (err, result) => {
+                        //if (err) throw err;
+
+                        //console.log(result);
+                        //return;
+                    //});
                     async.each(link_tweets, (tweet, callback) => {
                         twitter_client.get('statuses/oembed', {
                             url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
@@ -76,23 +83,64 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             throw err;
                         }
                         fs.readFile('templates/email_template.html', 'utf8', (err, email_template) => {
-                            if (err) console.error(err);
+                            if (err) {
+                                console.error(err);
+                                throw err;
+                            }
                             const template = handlebars.compile(email_template);
                             const message = template({
                                 handle: handle,
                                 tweets: tweet_htmls
                             });
-                            send_email(user.email, message);
+                            send_email(user.email, message, (err) => {
+                                if (err) {
+                                    console.error(err);
+                                    throw err;
+                                }
+                            });
                         });
                     });
                 });
             });
-            console.log('sent all emails');
         });
     });
 });
 
-function send_email(email, message) {
+function update_latest(email, latest_id, callback) {
+    const query = 'UPDATE users SET latest_id = $1 WHERE email = $2;';
+    pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+        client.query(query, [ latest_id, email ], (err, result) => {
+            done();
+
+            if (err) return callback(err);
+
+            return callback(null, result);
+        });
+    });
+}
+
+function send_email(email, message, callback) {
     console.log(`to: ${email}`);
     console.log(message);
+    var mailOptions = {
+        port: 465,
+        host: "mail.privateemail.com",
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD
+        }
+    };
+    var transporter = nodemailer.createTransport(mailOptions);
+
+    transporter.sendMail({
+        from: 'nick@nickwhite.co',
+        to: email,
+        subject: 'Daily link recap',
+        html: message
+    }, (error, info) => {
+        if (error) {
+            return console.log(error);
+        }
+        console.log(info);
+    });
 };
