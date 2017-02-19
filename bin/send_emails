@@ -25,14 +25,14 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
         const users = result.rows;
 
-        _.forEach(users, (user) => {
+        async.eachSeries(users, (user, user_callback) => {
             const accounts = [];
-            async.eachSeries(user.handles, (handle, callback) => {
+            async.eachOfSeries(user.handles, (handle, i, handle_callback) => {
                 let get_options;
-                if (user.latest_tweet) {
+                if (handle.latest_tweet) {
                     get_options = {
                         screen_name: handle,
-                        since_id: user.latest_tweet,
+                        since_id: handle.latest_tweet,
                         count: '200'
                     }
                 } else {
@@ -55,12 +55,8 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                         return urls.length > 0;
                     });
                     const tweet_htmls = [];
-                    //update_latest(user.email, link_tweets[0].id_str, (err, result) => {
-                        //if (err) throw err;
-
-                        //console.log(result);
-                        //return;
-                    //});
+                    handle.latest_tweet = link_tweets[0].id_str;
+                    //users.handles[i].latest_tweet = link_tweets[0].id_str;
                     async.each(link_tweets, (tweet, html_callback) => {
                         twitter_client.get('statuses/oembed', {
                             url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
@@ -88,7 +84,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             account.new_tweets = false;
                         }
                         accounts.push(account);
-                        return callback(null);
+                        return handle_callback(null);
                     });
                 });
             }, (err) => {
@@ -104,14 +100,21 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             console.error(err);
                             throw err;
                         }
+                        return user_callback();
                     });
                 });
             });
+        }, (err) => {
+            if (err) {
+                console.log(err);
+                throw err;
+            }
+            console.log(users);
         });
     });
 });
 
-function update_latest(email, latest_id, callback) {
+function update_latest(email, handle, latest_id, callback) {
     const query = 'UPDATE users SET latest_id = $1 WHERE email = $2;';
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         client.query(query, [ latest_id, email ], (err, result) => {

@@ -66,18 +66,24 @@ function addUser() {
         }
 
         console.log(user);
-        if (user && user.handles.includes(handle)) {
+        if (user && user.handles.find((each_handle) => {
+            return each_handle === handle;
+        })) {
             $('#submitResultMessage').text(email + " is already receiving email alerts for @" + handle);
         } else if (user) {
-            user.handles.push(handle);
+            user.handles.push({
+                handle: handle
+            });
             putUser(user, (response) => {
                 $('#submitResultMessage').text("Email alerts successfully enabled");
             });
         } else {
             user = {
                 email: email,
-                handles: [handle]
-            }
+                handles: [{
+                    handle: handle
+                }]
+            };
             postUser(user, (response) => {
                 $('#submitResultMessage').text("Email alerts successfully enabled");
             });
