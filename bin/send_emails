@@ -76,11 +76,12 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             throw err;
                         }
                         fs.readFile('/templates/email_template.html', (err, email_template) => {
+                            if (err) console.error(err);
                             console.log(email_template);
-                            const template = handlebars.compile(email_template);
-                            const message = template(tweet_htmls);
-                            send_email(user.email, message);
-                            console.log(`sent all emails for ${user.email}`);
+                            //const template = handlebars.compile(email_template);
+                            //const message = template(tweet_htmls);
+                            //send_email(user.email, message);
+                            //console.log(`sent all emails for ${user.email}`);
                         });
                     });
                 });
