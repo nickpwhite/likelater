@@ -50,7 +50,7 @@ fs.readFile('../email_template.html', (err, email_template) => {
                             console.log('pre-url-filter');
                             console.log(tweet['entities']['urls']);
                             const urls = _.filter(tweet['entities']['urls'], (url) => {
-                                return !/twitter\.com\/.*\/status\//g.test(url);
+                                return !/twitter\.com\/.*\/status\//g.test(url.expanded_url);
                             });
                             console.log('post-url-filter');
                             console.log(urls);
