@@ -101,8 +101,6 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     const message = template({ accounts: accounts });
                     send_email(user.email, message, (err) => {
                         if (err) {
-                            cosnole.log('error6');
-                            console.error(err);
                             throw err;
                         }
                         update_latest(user.email, user.handles, (err) => {
@@ -117,9 +115,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             });
         }, (err) => {
             if (err) {
-                console.log('error7');
                 console.log(err);
-                throw err;
             }
             console.log(users);
         });
@@ -131,11 +127,10 @@ function update_latest(email, handles, callback) {
     console.log(handles);
     console.log(email);
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        client.query(query, [ handles, email ], (err, result) => {
+        client.query(query, [ JSON.stringify(handles), email ], (err, result) => {
             done();
 
             if (err) {
-                console.log(err);
                 return callback(err);
             }
 
