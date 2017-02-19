@@ -55,7 +55,8 @@ fs.readFile('../email_template.html', (err, email_template) => {
                             return urls.length > 0;
                         });
 
-                        console.log(link_tweets);
+                        console.log(tweets.length);
+                        console.log(link_tweets.length);
                     });
                 });
             });
