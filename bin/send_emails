@@ -97,20 +97,25 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     throw err;
                 }
                 fs.readFile('templates/email_template.html', 'utf8', (err, email_template) => {
-                    const template = handlebars.compile(email_template);
-                    const message = template({ accounts: accounts });
-                    send_email(user.email, message, (err) => {
-                        if (err) {
-                            throw err;
-                        }
-                        update_latest(user.email, user.handles, (err) => {
+                    const send = accounts.reduce((result, account) => {
+                        return result | account.new_tweets;
+                    }, false);
+                    if (send) {
+                        const template = handlebars.compile(email_template);
+                        const message = template({ accounts: accounts });
+                        send_email(user.email, message, (err) => {
                             if (err) {
-                                console.error(err);
-                                return user_callback(err);
+                                throw err;
                             }
-                            return user_callback();
+                            update_latest(user.email, user.handles, (err) => {
+                                if (err) {
+                                    console.error(err);
+                                    return user_callback(err);
+                                }
+                                return user_callback();
+                            });
                         });
-                    });
+                    }
                 });
             });
         }, (err) => {
