@@ -19,8 +19,8 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         done();
 
         if (err) {
-            console.error(err);
-            return;
+            console.error('error while getting users');
+            throw err;
         }
 
         const users = result.rows;
@@ -29,7 +29,6 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             const accounts = [];
             async.eachSeries(user.handles, (handle, handle_callback) => {
                 let get_options;
-                console.log(handle.latest_tweet);
                 if (handle.latest_tweet) {
                     get_options = {
                         screen_name: handle.handle,
@@ -44,10 +43,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                 }
 
                 twitter_client.get('favorites/list', get_options, (err, tweets) => {
-                    if (err) {
-                        console.error(err);
-                        return;
-                    }
+                    if (err) return handle_callback(err);
                     link_tweets = _.filter(tweets, (tweet) => {
                         const urls = _.filter(tweet['entities']['urls'], (url) => {
                             return !/twitter\.com\/.*\/status\//g.test(url.expanded_url);
@@ -72,11 +68,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             html_callback(null);
                         });
                     }, (err) => {
-                        if (err) {
-                            console.log('error4');
-                            console.error(err);
-                            throw err;
-                        }
+                        if (err) return handle_callback(err);
                         const account = {
                             handle: handle.handle,
                             tweets: tweet_htmls
@@ -91,11 +83,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     });
                 });
             }, (err) => {
-                if (err) {
-                    console.log('error5');
-                    console.error(err);
-                    throw err;
-                }
+                if (err) return user_callback(err);
                 fs.readFile('templates/email_template.html', 'utf8', (err, email_template) => {
                     const send = accounts.reduce((result, account) => {
                         return result | account.new_tweets;
@@ -108,11 +96,8 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                                 throw err;
                             }
                             update_latest(user.email, user.handles, (err) => {
-                                if (err) {
-                                    console.error(err);
-                                    return user_callback(err);
-                                }
-                                return user_callback();
+                                if (err) return user_callback(err);
+                                return user_callback(null);
                             });
                         });
                     }
@@ -120,9 +105,9 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             });
         }, (err) => {
             if (err) {
-                console.log(err);
+                console.error('error during users loop');
+                throw err;
             }
-            console.log(users);
         });
     });
 });
@@ -133,9 +118,7 @@ function update_latest(email, handles, callback) {
         client.query(query, [ JSON.stringify(handles), email ], (err, result) => {
             done();
 
-            if (err) {
-                return callback(err);
-            }
+            if (err) return callback(err);
 
             return callback(null, result);
         });
@@ -159,9 +142,7 @@ function send_email(email, message, callback) {
         subject: 'Daily link recap',
         html: message
     }, (error, info) => {
-        if (error) {
-            return callback(error);
-        }
+        if (error) return callback(error);
 
         return callback(null);
     });
