@@ -53,7 +53,7 @@ http.get('http://localhost:3000/users', (response) => {
                 var transporter = nodemailer.createTransport(mailOptions);
 
                 transporter.sendMail({
-                        from: 'nick@nickwhite.co',
+                        from: 'info@likelater.io',
                         to: user.email_address,
                         subject: 'Daily link recap',
                         html: email_body        
