@@ -137,7 +137,7 @@ function send_email(email, message, callback) {
     var transporter = nodemailer.createTransport(mailOptions);
 
     transporter.sendMail({
-        from: 'nick@nickwhite.co',
+        from: 'info@likelater.io',
         to: email,
         subject: 'Daily link recap',
         html: message
