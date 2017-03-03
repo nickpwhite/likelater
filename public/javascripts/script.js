@@ -91,9 +91,3 @@ function addUser() {
         $('#submitResultMessage').show();
     });
 };
-
-function changeNav(event) {
-    $('nav').find('.active').removeClass('active');
-    $(event.target).parent().addClass('active');
-    $('nav').find('.in').removeClass('in');
-};
