@@ -104,9 +104,10 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                                 return user_callback(null);
                             });
                         });
+                    } else {
+                        console.log(`Not sending email to ${user.email}`);
+                        return user_callback(null);
                     }
-                    console.log(`Not sending email to ${user.email}`);
-                    return user_callback(null);
                 });
             });
         }, (err) => {
