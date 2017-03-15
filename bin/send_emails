@@ -62,7 +62,6 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             hide_media: true
                         }, (err, tweet) => {
                             if (err) {
-                                console.log('error3');
                                 console.error(err);
                                 html_callback(err);
                             }
@@ -91,18 +90,23 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                         return result | account.new_tweets;
                     }, false);
                     if (send) {
+                        console.log(`Sending email to ${user.email}`);
                         const template = handlebars.compile(email_template);
                         const message = template({ accounts: accounts });
                         send_email(user.email, message, (err) => {
                             if (err) {
+                                console.error('throwing error');
                                 throw err;
                             }
                             update_latest(user.email, user.handles, (err) => {
                                 if (err) return user_callback(err);
+                                console.log('Calling user callback');
                                 return user_callback(null);
                             });
                         });
                     }
+                    console.log(`Not sending email to ${user.email}`);
+                    return user_callback(null);
                 });
             });
         }, (err) => {
@@ -117,12 +121,12 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 function update_latest(email, handles, callback) {
     const query = 'UPDATE users SET handles = $1 WHERE email = $2;';
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        client.query(query, [ JSON.stringify(handles), email ], (err, result) => {
+        client.query(query, [ JSON.stringify(handles), email ], (err) => {
             done();
 
             if (err) return callback(err);
 
-            return callback(null, result);
+            return callback(null);
         });
     });
 }
