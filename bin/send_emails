@@ -74,7 +74,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                 if (err) return user_callback(err);
                 fs.readFile('templates/email_template.html', 'utf8', (err, email_template) => {
                     const send = accounts.reduce((result, account) => {
-                        return result | account.new_tweets;
+                        return result || account.new_tweets;
                     }, false);
                     if (send) {
                         console.log(`Sending email to ${user.email}`);
