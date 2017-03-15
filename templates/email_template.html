@@ -2,14 +2,11 @@
 <html lang="en">
 <head>
     <title>Likelater roundup</title>
-
-    <!-- Display Tweets -->
-    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 </head>
 <body>
+    <img src="../public/images/logo_transparent.png"></img>
     <h1>Hello!</h1>
-    <p>Here is your daily roundup of tweets with links.</p>
+    <p>Here is your daily roundup of liked tweets containing links.</p>
     {{#accounts}}
     {{#if new_tweets}}
     <h3>@{{handle}}:</h3>
@@ -19,7 +16,7 @@
         {{/tweets}}
     </ul>
     {{^}}
-    <p>@{{handle}} doesn't have any new tweets that contain links. Check back tomorrow for some more tweets!</p>
+    <p>@{{handle}} doesn't have any new liked tweets that contain links. Check back tomorrow for some more tweets!</p>
     {{/if}}
     {{/accounts}}
 </body>
