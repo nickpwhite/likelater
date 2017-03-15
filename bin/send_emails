@@ -28,28 +28,26 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         async.eachSeries(users, (user, user_callback) => {
             const accounts = [];
             async.eachSeries(user.handles, (handle, handle_callback) => {
-                let get_options;
+                let get_options = {
+                    screen_name: handle.handle,
+                    count: '200'
+                };
                 if (handle.latest_tweet) {
-                    get_options = {
-                        screen_name: handle.handle,
-                        since_id: handle.latest_tweet,
-                        count: '200'
-                    }
-                } else {
-                    get_options = {
-                        screen_name: handle.handle,
-                        count: '200'
-                    }
+                    get_options.since_id = handle.latest_tweet;
                 }
 
                 twitter_client.get('favorites/list', get_options, (err, tweets) => {
                     if (err) return handle_callback(err);
+                    console.log('Tweets:\n');
+                    console.log(tweets);
                     link_tweets = _.filter(tweets, (tweet) => {
                         const urls = _.filter(tweet['entities']['urls'], (url) => {
                             return !/twitter\.com\/.*\/status\//g.test(url.expanded_url);
                         });
                         return urls.length > 0;
                     });
+                    console.log('Link tweets:\n');
+                    console.log(link_tweets);
                     const tweet_htmls = [];
                     if (link_tweets.length > 0) {
                         handle.latest_tweet = link_tweets[0].id_str;
