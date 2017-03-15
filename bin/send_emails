@@ -38,7 +38,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
                 twitter_client.get('favorites/list', get_options, (err, tweets) => {
                     if (err) return handle_callback(err);
-                    console.log('Tweets:\n');
+                    console.log(`Tweets for ${user.email}:\n`);
                     console.log(tweets);
                     link_tweets = _.filter(tweets, (tweet) => {
                         const urls = _.filter(tweet['entities']['urls'], (url) => {
