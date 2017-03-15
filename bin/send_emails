@@ -23,7 +23,11 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             throw err;
         }
 
+        console.log('Result:');
+        console.log(result);
         const users = result.rows;
+        console.log('Users:');
+        console.log(users);
 
         async.eachSeries(users, (user, user_callback) => {
             const accounts = [];
