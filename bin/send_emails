@@ -15,12 +15,11 @@ const twitter_client = new twitter({
 });
 
 pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+    if (err) throw err;
     client.query('SELECT * from users WHERE active=TRUE', (err, result) => {
         done();
 
-        if (err) {
-            throw err;
-        }
+        if (err) throw err;
 
         const users = result.rows;
 
@@ -52,10 +51,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
                             hide_media: true
                         }, (err, tweet) => {
-                            if (err) {
-                                console.error(err);
-                                html_callback(err);
-                            }
+                            if (err) html_callback(err);
                             tweet_htmls.push(tweet);
                             html_callback(null);
                         });
@@ -85,9 +81,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                         const template = handlebars.compile(email_template);
                         const message = template({ accounts: accounts });
                         send_email(user.email, message, (err) => {
-                            if (err) {
-                                throw err;
-                            }
+                            if (err) return user_callback(err);
                             update_latest(user.email, user.handles, (err) => {
                                 if (err) return user_callback(err);
                                 return user_callback(null);
@@ -100,9 +94,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                 });
             });
         }, (err) => {
-            if (err) {
-                throw err;
-            }
+            if (err) throw err;
         });
     });
 });
