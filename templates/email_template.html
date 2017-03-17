@@ -18,4 +18,8 @@
     <p>@{{handle}} doesn't have any new liked tweets that contain links. Check back tomorrow for some more tweets!</p>
     {{/if}}
     {{/accounts}}
+    <form action="http://likelater.io/unsubscribe" method="post">
+        <input type="hidden" value={{encrypted_email}}></input>
+        <p>Click <input type="submit">here</input> to unsubscribe. We'll be sorry to see you go!</p>
+    </form>
 </body>

@@ -78,8 +78,12 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     }, false);
                     if (send) {
                         console.log(`Sending email to ${user.email}`);
+                        const encrypted_email = user.email; //TODO: make this not send in plaintext
                         const template = handlebars.compile(email_template);
-                        const message = template({ accounts: accounts });
+                        const message = template({ 
+                            accounts: accounts,
+                            encrypted_email: encrypted_email
+                        });
                         send_email(user.email, message, (err) => {
                             if (err) return user_callback(err);
                             update_latest(user.email, user.handles, (err) => {
