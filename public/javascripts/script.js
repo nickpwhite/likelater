@@ -109,8 +109,13 @@ function deactivateUser() {
     var handle = $('#unenroll_handle')[0].value;
     var email = $('#unenroll_email')[0].value;
 
+    var data = {
+        email: email,
+        handle: handle
+    };
+
     $.ajax('/unsubscribe', {
-        data: { email: email, handle: handle },
+        data: data,
         dataType: 'json',
         method: 'POST',
         success: (response) => {
