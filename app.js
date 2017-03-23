@@ -106,6 +106,7 @@ function setInactive(email, handle, callback) {
     const update_query = 'UPDATE users SET handles = $1 WHERE email = $2;';
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         client.query(get_query, [ email ], (err, result) => {
+            if (err) throw err;
             const user = result.rows;
             let set_active = true;
             if (!user) return callback('User not found');
