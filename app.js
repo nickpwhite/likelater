@@ -110,22 +110,21 @@ function setInactive(email, handle, callback) {
             if (err) throw err;
             const user = result.rows[0];
             let set_active = false;
-            if (!user) return callback('User not found');
+            if (!user) return callback('User not found.');
             async.eachSeries(user.handles, (each_handle, handle_callback) => {
                 if (each_handle.handle === handle) {
-                    if (!each_handle.active) return callback('Handle not subscribed');
+                    if (!each_handle.active) return callback('You\'re already not receiving alerts for this email. If you continue to receive emails, please contact us.');
                     each_handle.active = false;
                     set_active = true;
                 }
                 return handle_callback(null);
             }, (err) => {
-                if(!set_active) return callback('Handle not found');
+                if(!set_active) return callback('Handle not found.');
 
                 client.query(update_query, [ JSON.stringify(user.handles), email ], (err, result) => {
                     done();
 
                     if (err) {
-                        console.log('nick error');
                         return callback(err);
                     }
 
