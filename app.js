@@ -109,27 +109,28 @@ function setInactive(email, handle, callback) {
         client.query(get_query, [ email ], (err, result) => {
             if (err) throw err;
             const user = result.rows[0];
-            let set_active = true;
+            let set_active = false;
             if (!user) return callback('User not found');
-            user.handles.forEach((handle) => {
-                if (handle.handle === handle) {
-                    handle.handle.active = false;
+            async.eachSeries(user.handles, (each_handle, handle_callback) => {
+                if (each_handle.handle === handle) {
+                    each_handle.active = false;
                     set_active = true;
                 }
-            });
+                return handle_callback(null);
+            }, (err) => {
+                if(!set_active) return callback('Handle not found');
 
-            if(!set_active) return callback('Handle not found');
+                console.log(user);
 
-            console.log(user.handles);
+                client.query(update_query, [ JSON.stringify(user.handles), email ], (err, result) => {
+                    done();
 
-            client.query(update_query, [ user.handles, email ], (err, result) => {
-                done();
+                    if (err) {
+                        return callback(err);
+                    }
 
-                if (err) {
-                    return callback(err);
-                }
-
-                return callback(null);
+                    return callback(null);
+                });
             });
         });
     });
