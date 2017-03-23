@@ -23,7 +23,6 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
                     return user_callback(null);
                 });
-                return user_callback(null);
             });
         }, (err) => {
             if (err) throw err;
