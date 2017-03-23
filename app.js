@@ -120,12 +120,12 @@ function setInactive(email, handle, callback) {
 
             if(!set_active) return callback('Handle not found');
 
+            console.log(user.handles);
+
             client.query(update_query, [ user.handles, email ], (err, result) => {
                 done();
 
                 if (err) {
-                    console.log('nick error');
-                    console.log(err);
                     return callback(err);
                 }
 
