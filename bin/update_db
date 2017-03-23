@@ -13,8 +13,9 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         async.eachSeries(users, (user, user_callback) => {
             async.eachSeries(user.handles, (handle, handle_callback) => {
                 handle.active = true;
+                return handle_callback(null);
             }, (err) => {
-                console.log(users);
+                console.log(user);
                 //client.query('UPDATE users set HANDLES = $1 WHERE email = $2;', [ JSON.stringify(user.handles), user.email ], (err) => {
                     //done();
 
@@ -22,6 +23,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
                     //return user_callback(null);
                 //});
+                return user_callback(null);
             });
         }, (err) => {
             if (err) throw err;
