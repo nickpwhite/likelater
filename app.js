@@ -1,5 +1,6 @@
 'use strict';
 
+const async = require('async');
 const body_parser = require('body-parser');
 const express = require('express');
 const pg = require('pg');
