@@ -31,12 +31,17 @@ app.get('/users', (req, res) => {
     });
 });
 
+app.get('/unsubscribe', (req, res) => {
+    res.sendFile(__dirname + '/public/unsubscribe.html');
+});
+
 app.post('/unsubscribe', (req, res) => {
-    setInactive(req.body.encrypted_email, (err) => {
+    setInactive(req.body.email, req.body.handle, (err) => {
         if (err) {
             console.error(err);
+            res.status(404).send(err);
         }
-        return;
+        res.json({});
     });
 });
     
@@ -96,15 +101,31 @@ function getUsers(email, callback) {
     });
 };
 
-function setInactive(email, callback) {
-    const query = 'UPDATE users SET active = FALSE WHERE email = $1;';
+function setInactive(email, handle, callback) {
+    const get_query = 'GET users WHERE email = $1;';
+    const update_query = 'UPDATE users SET handles = $1 WHERE email = $2;';
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        client.query(query, [ email ], (err) => {
-            done();
+        client.query(get_query, [ email ], (err, result) => {
+            const user = result.rows;
+            let set_active = true;
+            if (!user) return callback('User not found');
+            console.log(user);
+            user.handles.forEach((handle) => {
+                if (handle.handle === handle) {
+                    handle.active = false;
+                    set_active = true;
+                }
+            });
 
-            if (err) return callback(err);
-            
-            return callback(null);
+            if(!set_active) return callback('Handle not found');
+
+            client.query(update_query, [ user.handles, email ], (err, result) => {
+                done();
+
+                if (err) return callback(err);
+
+                return callback(null);
+            });
         })
     });
 }

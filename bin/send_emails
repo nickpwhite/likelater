@@ -16,7 +16,7 @@ const twitter_client = new twitter({
 
 pg.connect(process.env.DATABASE_URL, (err, client, done) => {
     if (err) throw err;
-    client.query('SELECT * from users WHERE active=TRUE', (err, result) => {
+    client.query('SELECT * from users', (err, result) => {
         done();
 
         if (err) throw err;
@@ -26,6 +26,10 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         async.eachSeries(users, (user, user_callback) => {
             const accounts = [];
             async.eachSeries(user.handles, (handle, handle_callback) => {
+                if (!handle.active) {
+                    console.log(`Skipping ${handle.handle}`);
+                    return handle_callback(null);
+                }
                 let get_options = {
                     screen_name: handle.handle,
                     count: '200'
