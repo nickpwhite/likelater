@@ -84,7 +84,7 @@ function addUser(user, callback) {
 };
 
 function getUsers(email, callback) {
-    let query = 'SELECT * from users';
+    let query = 'SELECT * FROM users';
     if (email) {
         query += ` WHERE email = \'${email}\';`; 
     } else {
@@ -102,7 +102,7 @@ function getUsers(email, callback) {
 };
 
 function setInactive(email, handle, callback) {
-    const get_query = 'GET users WHERE email = $1;';
+    const get_query = 'SELECT * FROM users WHERE email = $1;';
     const update_query = 'UPDATE users SET handles = $1 WHERE email = $2;';
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         client.query(get_query, [ email ], (err, result) => {
