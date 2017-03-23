@@ -113,6 +113,7 @@ function setInactive(email, handle, callback) {
             if (!user) return callback('User not found');
             async.eachSeries(user.handles, (each_handle, handle_callback) => {
                 if (each_handle.handle === handle) {
+                    if (!each_handle.active) return callback('Handle not subscribed');
                     each_handle.active = false;
                     set_active = true;
                 }
