@@ -113,7 +113,7 @@ function setInactive(email, handle, callback) {
             if (!user) return callback('User not found.');
             async.eachSeries(user.handles, (each_handle, handle_callback) => {
                 if (each_handle.handle === handle) {
-                    if (!each_handle.active) return callback('Your email address is already unsubscribed from this Twitter handle. If you continue to receive emails, please contact us.');
+                    if (!each_handle.active) return callback('Your email address is already unsubscribed from this Twitter handle.\nIf you continue to receive emails, please contact us.');
                     each_handle.active = false;
                     set_active = true;
                 }
