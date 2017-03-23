@@ -74,11 +74,11 @@ function addUser() {
         }
 
         if (user && handle_index >= 0 && user.handles[handle_index].active) {
-            $('#submitResultMessage').text(email + " is already receiving email alerts for @" + handle);
+            $('#submitResultMessage').text(`${email} is already receiving email alerts for @${handle}.`);
         } else if (user && handle_index >= 0) {
             user.handles[handle_index].active = true;
             putUser(user, (response) => {
-                $('#submitResultMessage').text("Email alerts successfully enabled");
+                $('#submitResultMessage').text("Email alerts successfully enabled.");
             });
         } else if (user) {
             user.handles.push({
@@ -86,7 +86,7 @@ function addUser() {
                 handle: handle
             });
             putUser(user, (response) => {
-                $('#submitResultMessage').text("Email alerts successfully enabled");
+                $('#submitResultMessage').text("Email alerts successfully enabled.");
             });
         } else {
             user = {
@@ -97,7 +97,7 @@ function addUser() {
                 }]
             };
             postUser(user, (response) => {
-                $('#submitResultMessage').text("Email alerts successfully enabled");
+                $('#submitResultMessage').text("Email alerts successfully enabled.");
             });
         }
         $('#submitResultMessage').show();
