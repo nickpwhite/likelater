@@ -24,4 +24,4 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
             });
         });
     });
-};
+});
