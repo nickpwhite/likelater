@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const async = require('async');
 const pg = require('pg');
 
 pg.connect(process.env.DATABASE_URL, (err, client, done) => {
