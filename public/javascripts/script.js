@@ -121,7 +121,7 @@ function deactivateUser() {
             $('#submitResultMessage').text("Email alerts successfully disabled, we're sorry to see you go.");
         },
         error: (error) => {
-            if (error === 'User not found.' || error === 'Handle not found.' || error === 'You\'re already not receiving alerts for this email. If you continue to receive emails, please contact us.') $('#submitResultMessage').text(error);
+            if (error) $('#submitResultMessage').text(error);
             else $('#submitResultMessage').text("There was a problem enabling alerts, please contact us.");
         }
     });
