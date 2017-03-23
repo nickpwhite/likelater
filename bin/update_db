@@ -12,17 +12,15 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 
         async.eachSeries(users, (user, user_callback) => {
             user.handles.active = true;
-            return user_callback(null);
-        }, (err) => {
-            if (err) throw err;
-
             client.query('UPDATE users set HANDLES = $1 WHERE email = $2;', [ JSON.stringify(user.handles), user.email ], (err) => {
                 done();
 
                 if (err) throw err;
 
-                return 'Done';
+                return user_callback(null);
             });
+        }, (err) => {
+            if (err) throw err;
         });
     });
 });
