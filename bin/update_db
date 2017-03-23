@@ -16,7 +16,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
         }, (err) => {
             if (err) throw err;
 
-            client.query('UPDATE users set HANDLES = $1 WHERE email = $2;', [ JSON.stringify(handles), email ], (err) => {
+            client.query('UPDATE users set HANDLES = $1 WHERE email = $2;', [ JSON.stringify(user.handles), user.email ], (err) => {
                 done();
 
                 if (err) throw err;
