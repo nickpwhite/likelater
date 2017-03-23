@@ -113,7 +113,7 @@ function setInactive(email, handle, callback) {
             if (!user) return callback('User not found');
             user.handles.forEach((handle) => {
                 if (handle.handle === handle) {
-                    handle.active = false;
+                    handle.handle.active = false;
                     set_active = true;
                 }
             });
