@@ -116,7 +116,7 @@ function deactivateUser() {
 
     $.ajax('/unsubscribe', {
         data: data,
-        dataType: 'json',
+        //dataType: 'json',
         method: 'POST',
         success: (response) => {
             $('#submitResultMessage').text("Email alerts successfully disabled, we're sorry to see you go");
