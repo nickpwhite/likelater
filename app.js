@@ -40,8 +40,9 @@ app.post('/unsubscribe', (req, res) => {
         if (err) {
             console.error(err);
             res.status(404).send(err);
+        } else {
+            res.send('');
         }
-        res.json({});
     });
 });
     
