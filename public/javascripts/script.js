@@ -122,7 +122,7 @@ function deactivateUser() {
         },
         error: (error) => {
             console.log(error);
-            if (error) $('#submitResultMessage').text(error);
+            if (error) $('#submitResultMessage').text(error.responseText);
             else $('#submitResultMessage').text("There was a problem enabling alerts, please contact us.");
         }
     });
