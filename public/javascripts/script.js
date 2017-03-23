@@ -119,9 +119,11 @@ function deactivateUser() {
         dataType: 'json',
         method: 'POST',
         success: (response) => {
+            console.log('success');
             $('#submitResultMessage').text("Email alerts successfully disabled, we're sorry to see you go");
         },
         error: (error) => {
+            console.log('error');
             if (error === 'User not found' || error === 'Handle not found') $('#submitResultMessage').text(error);
             else $('#submitResultMessage').text("There was a problem enabling alerts, please contact us");
         }

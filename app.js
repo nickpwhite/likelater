@@ -39,10 +39,9 @@ app.get('/unsubscribe', (req, res) => {
 app.post('/unsubscribe', (req, res) => {
     setInactive(req.body.email, req.body.handle, (err) => {
         if (err) {
-            console.error(err);
-            res.status(404).send({ error: err});
+            res.status(404).send(err);
         } else {
-            res.send('');
+            res.send({});
         }
     });
 });
