@@ -121,12 +121,11 @@ function setInactive(email, handle, callback) {
             }, (err) => {
                 if(!set_active) return callback('Handle not found');
 
-                console.log(user);
-
                 client.query(update_query, [ JSON.stringify(user.handles), email ], (err, result) => {
                     done();
 
                     if (err) {
+                        console.log('nick error');
                         return callback(err);
                     }
 
