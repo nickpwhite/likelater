@@ -111,7 +111,6 @@ function setInactive(email, handle, callback) {
             const user = result.rows[0];
             let set_active = true;
             if (!user) return callback('User not found');
-            console.log(user);
             user.handles.forEach((handle) => {
                 if (handle.handle === handle) {
                     handle.active = false;
@@ -124,11 +123,15 @@ function setInactive(email, handle, callback) {
             client.query(update_query, [ user.handles, email ], (err, result) => {
                 done();
 
-                if (err) return callback(err);
+                if (err) {
+                    console.log('nick error');
+                    console.log(err);
+                    return callback(err);
+                }
 
                 return callback(null);
             });
-        })
+        });
     });
 }
 
