@@ -66,10 +66,12 @@ function addUser() {
 
         let handle_index = -1;
 
-        for (let i = 0; i < user.handles.length; i++) {
-            if (user.handles[i].handle === handle) {
-                handle_index = i;
-                break;
+        if (user) {
+            for (let i = 0; i < user.handles.length; i++) {
+                if (user.handles[i].handle === handle) {
+                    handle_index = i;
+                    break;
+                }
             }
         }
 
