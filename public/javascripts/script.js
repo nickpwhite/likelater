@@ -95,6 +95,7 @@ function addUser() {
                 email: email,
                 handles: [{
                     active: true,
+                    first_time: true,
                     handle: handle
                 }]
             };
