@@ -2,14 +2,11 @@
 <html lang="en">
 <head>
     <title>Likelater roundup</title>
-
-    <!-- Display Tweets -->
-    <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
 </head>
+
 <body>
     <h1>Hello!</h1>
-    <p>Here is your daily roundup of tweets with links.</p>
+    <p>Here is your daily roundup of liked tweets containing links.</p>
     {{#accounts}}
     {{#if new_tweets}}
     <h3>@{{handle}}:</h3>
@@ -19,7 +16,9 @@
         {{/tweets}}
     </ul>
     {{^}}
-    <p>@{{handle}} doesn't have any new tweets that contain links. Check back tomorrow for some more tweets!</p>
+    <p>@{{handle}} doesn't have any new liked tweets that contain links. Check back tomorrow for some more tweets!</p>
     {{/if}}
     {{/accounts}}
+    <p>Click <a href="http://www.likelater.io/unsubscribe">here</a> to unsubscribe. We'll be sorry to see you go!</p>
+    <p>Have any feedback? Reply to this email!</p>
 </body>

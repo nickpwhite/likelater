@@ -15,31 +15,27 @@ const twitter_client = new twitter({
 });
 
 pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-    client.query('SELECT * from users WHERE active=TRUE', (err, result) => {
+    if (err) throw err;
+    client.query('SELECT * from users', (err, result) => {
         done();
 
-        if (err) {
-            console.error('error while getting users');
-            throw err;
-        }
+        if (err) throw err;
 
         const users = result.rows;
 
         async.eachSeries(users, (user, user_callback) => {
             const accounts = [];
             async.eachSeries(user.handles, (handle, handle_callback) => {
-                let get_options;
+                if (!handle.active) {
+                    console.log(`Skipping ${handle.handle}`);
+                    return handle_callback(null);
+                }
+                let get_options = {
+                    screen_name: handle.handle,
+                    count: '200'
+                };
                 if (handle.latest_tweet) {
-                    get_options = {
-                        screen_name: handle.handle,
-                        since_id: handle.latest_tweet,
-                        count: '200'
-                    }
-                } else {
-                    get_options = {
-                        screen_name: handle.handle,
-                        count: '200'
-                    }
+                    get_options.since_id = handle.latest_tweet;
                 }
 
                 twitter_client.get('favorites/list', get_options, (err, tweets) => {
@@ -50,6 +46,10 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                         });
                         return urls.length > 0;
                     });
+                    if (handle.first_time) {
+                        link_tweets = link_tweets.slice(0, 5); 
+                        handle.first_time = false;
+                    } else handle.first_time = false; //Dirty db update TODO: remove this after today
                     const tweet_htmls = [];
                     if (link_tweets.length > 0) {
                         handle.latest_tweet = link_tweets[0].id_str;
@@ -59,11 +59,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                             url: `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`,
                             hide_media: true
                         }, (err, tweet) => {
-                            if (err) {
-                                console.log('error3');
-                                console.error(err);
-                                html_callback(err);
-                            }
+                            if (err) html_callback(err);
                             tweet_htmls.push(tweet);
                             html_callback(null);
                         });
@@ -86,28 +82,31 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                 if (err) return user_callback(err);
                 fs.readFile('templates/email_template.html', 'utf8', (err, email_template) => {
                     const send = accounts.reduce((result, account) => {
-                        return result | account.new_tweets;
+                        return result || account.new_tweets;
                     }, false);
                     if (send) {
+                        console.log(`Sending email to ${user.email}`);
+                        const encrypted_email = user.email; //TODO: make this not send in plaintext
                         const template = handlebars.compile(email_template);
-                        const message = template({ accounts: accounts });
+                        const message = template({ 
+                            accounts: accounts,
+                            encrypted_email: encrypted_email
+                        });
                         send_email(user.email, message, (err) => {
-                            if (err) {
-                                throw err;
-                            }
+                            if (err) return user_callback(err);
                             update_latest(user.email, user.handles, (err) => {
                                 if (err) return user_callback(err);
                                 return user_callback(null);
                             });
                         });
+                    } else {
+                        console.log(`Not sending email to ${user.email}, they're all caught up`);
+                        return user_callback(null);
                     }
                 });
             });
         }, (err) => {
-            if (err) {
-                console.error('error during users loop');
-                throw err;
-            }
+            if (err) throw err;
         });
     });
 });
@@ -115,12 +114,12 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
 function update_latest(email, handles, callback) {
     const query = 'UPDATE users SET handles = $1 WHERE email = $2;';
     pg.connect(process.env.DATABASE_URL, (err, client, done) => {
-        client.query(query, [ JSON.stringify(handles), email ], (err, result) => {
+        client.query(query, [ JSON.stringify(handles), email ], (err) => {
             done();
 
             if (err) return callback(err);
 
-            return callback(null, result);
+            return callback(null);
         });
     });
 }
@@ -137,7 +136,7 @@ function send_email(email, message, callback) {
     var transporter = nodemailer.createTransport(mailOptions);
 
     transporter.sendMail({
-        from: 'info@likelater.io',
+        from: 'hello@likelater.io',
         to: email,
         subject: 'Daily link recap',
         html: message

@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+const async = require('async');
+const pg = require('pg');
+
+pg.connect(process.env.DATABASE_URL, (err, client, done) => {
+    if (err) throw err;
+    client.query('SELECT * from users;', (err, result) => {
+        if (err) throw err;
+
+        const users = result.rows;
+
+        async.eachSeries(users, (user, user_callback) => {
+            async.eachSeries(user.handles, (handle, handle_callback) => {
+                handle.active = true;
+                return handle_callback(null);
+            }, (err) => {
+                console.log(user);
+                client.query('UPDATE users set HANDLES = $1 WHERE email = $2;', [ JSON.stringify(user.handles), user.email ], (err) => {
+                    done();
+
+                    if (err) throw err;
+
+                    return user_callback(null);
+                });
+            });
+        }, (err) => {
+            if (err) throw err;
+        });
+    });
+});

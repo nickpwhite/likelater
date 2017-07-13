@@ -6,8 +6,7 @@ function getUsers(callback) {
         method: 'GET',
         success: (response) => {
             callback(null, response);
-        },
-        error: (error) => {
+        }, error: (error) => {
             callback(error, null);
         }
     });
@@ -65,29 +64,70 @@ function addUser() {
             throw err;
         }
 
-        console.log(user);
-        if (user && user.handles.find((each_handle) => {
-            return each_handle.handle === handle;
-        })) {
-            $('#submitResultMessage').text(email + " is already receiving email alerts for @" + handle);
+        let handle_index = -1;
+
+        if (user) {
+            for (let i = 0; i < user.handles.length; i++) {
+                if (user.handles[i].handle === handle) {
+                    handle_index = i;
+                    break;
+                }
+            }
+        }
+
+        if (user && handle_index >= 0 && user.handles[handle_index].active) {
+            $('#submitResultMessage').text(`${email} is already receiving email alerts for @${handle}.`);
+        } else if (user && handle_index >= 0) {
+            user.handles[handle_index].active = true;
+            putUser(user, (response) => {
+                $('#submitResultMessage').text("Email alerts successfully enabled.");
+            });
         } else if (user) {
             user.handles.push({
+                active: true,
                 handle: handle
             });
             putUser(user, (response) => {
-                $('#submitResultMessage').text("Email alerts successfully enabled");
+                $('#submitResultMessage').text("Email alerts successfully enabled.");
             });
         } else {
             user = {
                 email: email,
                 handles: [{
+                    active: true,
+                    first_time: true,
                     handle: handle
                 }]
             };
             postUser(user, (response) => {
-                $('#submitResultMessage').text("Email alerts successfully enabled");
+                $('#submitResultMessage').text("Email alerts successfully enabled.");
             });
         }
         $('#submitResultMessage').show();
     });
+};
+
+function deactivateUser() {
+    var handle = $('#unenroll_handle')[0].value;
+    var email = $('#unenroll_email')[0].value;
+
+    var data = {
+        email: email,
+        handle: handle
+    };
+
+    $.ajax('/unsubscribe', {
+        data: data,
+        dataType: 'json',
+        method: 'POST',
+        success: (response) => {
+            $('#submitResultMessage').text("Email alerts successfully disabled, we're sorry to see you go.");
+        },
+        error: (error) => {
+            console.log(error);
+            if (error) $('#submitResultMessage').text(error.responseText);
+            else $('#submitResultMessage').text("There was a problem enabling alerts, please contact us.");
+        }
+    });
+    $('#submitResultMessage').show();
 };
