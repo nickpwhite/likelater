@@ -49,7 +49,7 @@ pg.connect(process.env.DATABASE_URL, (err, client, done) => {
                     if (handle.first_time) {
                         link_tweets = link_tweets.slice(0, 5); 
                         handle.first_time = false;
-                    } else handle.first_time = false; //Dirty db update TODO: remove this after today
+                    }
                     const tweet_htmls = [];
                     if (link_tweets.length > 0) {
                         handle.latest_tweet = link_tweets[0].id_str;
