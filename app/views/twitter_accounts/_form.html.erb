@@ -1,4 +1,4 @@
-<%= form_for @twitter_account, remote: true do |form| %>
+<%= form_with model: @twitter_account do |form| %>
   <div class="row">
     <div class="col">
       <div class="form-group">
@@ -9,20 +9,20 @@
               @
             </div>
           </div>
-          <%= form.text_field :handle, class: "form-control", placeholder: "likelater" %>
+          <%= form.text_field :handle, class: "form-control", required: true,
+            placeholder: "likelater" %>
         </div>
       </div>
       <%= form.fields_for :user, @twitter_account.user do |user_form| %>
         <div class="form-group">
           <%= user_form.label :email, "Email Address" %>
-          <%= user_form.email_field :email, class: "form-control",
-            placeholder: "info@likelater.io",
-            pattern: "[A-z0-9._%+-]+@[A-z0-9.-]+\.[A-z]{2,}" %>
+          <%= user_form.email_field :email, class: "form-control", required: true,
+            placeholder: "info@likelater.io", pattern: "[A-z0-9._%+-]+@[A-z0-9.-]+\.[A-z]{2,}" %>
         </div>
       <% end %>
       <div class="form-group">
         <%= form.submit "Submit", class: "btn btn-primary submit-btn" %>
-        <span class="submit-result" id="submitResultMessage"></span>
+        <span class="submit-result" id="formStatusMessage"></span>
       </div>
     </div>
     <div class="col d-none d-md-block">
