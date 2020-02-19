@@ -1,0 +1,32 @@
+<%= form_for @twitter_account, remote: true do |form| %>
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <%= form.label :handle, "Twitter Handle" %>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              @
+            </div>
+          </div>
+          <%= form.text_field :handle, class: "form-control", placeholder: "likelater" %>
+        </div>
+      </div>
+      <%= form.fields_for :user, @twitter_account.user do |user_form| %>
+        <div class="form-group">
+          <%= user_form.label :email, "Email Address" %>
+          <%= user_form.email_field :email, class: "form-control",
+            placeholder: "info@likelater.io",
+            pattern: "[A-z0-9._%+-]+@[A-z0-9.-]+\.[A-z]{2,}" %>
+        </div>
+      <% end %>
+      <div class="form-group">
+        <%= form.submit "Submit", class: "btn btn-primary submit-btn" %>
+        <span class="submit-result" id="submitResultMessage"></span>
+      </div>
+    </div>
+    <div class="col d-none d-md-block">
+      <%= image_tag("logo_transparent.png", alt: "rss feed", class: "logo") %>
+    </div>
+  </div>
+<% end %>
