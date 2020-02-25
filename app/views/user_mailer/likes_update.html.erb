@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Likelater roundup</title>
+  </head>
+
+  <body>
+    <h1>Hello!</h1>
+    <p>Here is your daily roundup of liked tweets containing links.</p>
+    <% @handles_to_tweets.each do |handle, tweets| %>
+      <% if tweets.length > 0 %>
+        <h3>@<%= handle %>:</h3>
+        <ul>
+          <% tweets.each do |tweet| %>
+            <li><%= sanitize tweet %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p>@<%= handle %> doesn't have any new liked tweets that contain links. Check back tomorrow for some more tweets!</p>
+      <% end %>
+    <% end %>
+    <p>Click <a href="http://www.likelater.io/unsubscribe">here</a> to unsubscribe. We'll be sorry to see you go!</p>
+    <p>Have any feedback? Reply to this email!</p>
+  </body>
+</html>
