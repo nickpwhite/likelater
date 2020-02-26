@@ -5,12 +5,17 @@ class UserMailer < ApplicationMailer
     @user = params[:user]
     @accounts = @user.twitter_accounts.where(active: true)
 
+    if @accounts.empty?
+      logger.info "#{@user.email} doesn't have any accounts, they must have unsubscribed"
+      return
+    end
+
     @handles_to_tweets = @accounts.each_with_object({}) do |account, h|
       h[account.handle] = account.likes_with_links_as_html
     end
 
     if @handles_to_tweets.values.all?(&:empty?)
-      logger.info "No new tweets for #{@user.email}, not sending email."
+      logger.info "No new tweets for #{@user.email}, not sending email"
       return
     end
 
