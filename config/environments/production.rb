@@ -112,9 +112,9 @@ Rails.application.configure do
 
   config.action_mailer.smtp_settings = {
     address: "mail.privateemail.com",
-    port: "25",
+    port: "587",
     user_name: ENV["LIKELATER_EMAIL_USER_NAME"],
     password: ENV["LIKELATER_EMAIL_PASSWORD"],
-    authentication: :login
+    authentication: :plain
   }
 end
