@@ -3,14 +3,11 @@ default: &default
   encoding: unicode
   pool: 5
   timeout: 5000
-  password: <%= ENV['LIKELATER_DB_PASSWORD'] %>
-  username: <%= ENV['LIKELATER_DB_USER'] %>
+  url: <%= ENV['DATABASE_URL'] %>
 
 development:
   <<: *default
   database: likelater_dev
-  host: 127.0.0.1
-  port: 5433
 
 test:
   <<: *default
