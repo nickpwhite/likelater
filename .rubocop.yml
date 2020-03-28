@@ -5,6 +5,7 @@ AllCops:
     - 'script/**/*'
     - 'bin/**/*'
     - 'node_modules/**/*'
+    - 'vendor/**/*'
 
 Layout/HashAlignment:
   Enabled: false

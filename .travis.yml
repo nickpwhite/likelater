@@ -1,0 +1,7 @@
+language: ruby
+dist: bionic
+rvm:
+  - 2.6.5
+script:
+  - bin/rubocop
+  - bin/rspec
