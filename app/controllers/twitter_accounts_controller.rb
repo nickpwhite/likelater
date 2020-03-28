@@ -22,24 +22,35 @@ class TwitterAccountsController < ApplicationController
     @user = User.find_by(email: email)
     @account = TwitterAccount.find_by(handle: handle, user: @user)
 
+    status_message = format(try_destroy_account, email, handle)
+
     respond_to do |format|
-      if @user.nil? && @account.nil?
-        status_message = "#{email} is not signed up for Likelater."
-      elsif @account.nil?
-        status_message = "#{email} is not signed up to receive updates from #{handle}."
-      elsif @user.nil?
-        status_message = "Something went wrong, please contact us at hello@likelater.io."
-      elsif @account.destroy
-        status_message = "#{email} will no longer receive updates from #{handle}."
-      else
-        status_message =
-          "Something went wrong. Please try again later or contact hello@likelater.io."
-      end
       format.js { render "form_status", locals: { status_message: status_message } }
     end
   end
 
   private
+
+  def try_destroy_account
+    if @user.nil?
+      "%s is not signed up for Likelater."
+    elsif @account.nil?
+      "%s is not signed up to receive updates from @%s."
+    elsif @account.destroy
+      try_destroy_user
+    else
+      "Something went wrong. Please try again later or contact hello@likelater.io."
+    end
+  end
+
+  def try_destroy_user
+    if @user.twitter_accounts.empty?
+      @user.destroy
+      "%s will no longer receive updates from Likelater."
+    else
+      "%s will no longer receive updates from @%s."
+    end
+  end
 
   def account_params
     params.require(:twitter_account).permit(:handle, user: :email)
