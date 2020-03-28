@@ -4,7 +4,7 @@ module TwitterWrapper
   class Tweet
     delegate :attrs, :id, :urls, :urls?, to: :@tweet
 
-    TWITTER_URL_PATTERN = /twitter\.com\/.*\/status\//
+    TWITTER_URL_PATTERN = %r{twitter\.com\/.*\/status\/}.freeze
     private_constant :TWITTER_URL_PATTERN
 
     def initialize(tweet)
