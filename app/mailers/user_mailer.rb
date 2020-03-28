@@ -3,7 +3,7 @@
 class UserMailer < ApplicationMailer
   def likes_update
     @user = params[:user]
-    @accounts = @user.twitter_accounts.where(active: true)
+    @accounts = @user.twitter_accounts
 
     if @accounts.empty?
       logger.info "#{@user.email} doesn't have any accounts, they must have unsubscribed"

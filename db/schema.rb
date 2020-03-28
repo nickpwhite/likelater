@@ -10,14 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_14_153617) do
+ActiveRecord::Schema.define(version: 2020_03_28_033259) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "twitter_accounts", force: :cascade do |t|
     t.string "handle", null: false
-    t.boolean "active", default: true, null: false
     t.bigint "latest_tweet_id"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
