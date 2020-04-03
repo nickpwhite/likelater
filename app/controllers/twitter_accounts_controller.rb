@@ -5,13 +5,9 @@ class TwitterAccountsController < ApplicationController
     @user = User.find_or_initialize_by(email: user_params[:email])
     @account = TwitterAccount.new(handle: account_params[:handle], user: @user)
 
+    status_message = try_create_account
+
     respond_to do |format|
-      if @user.save && @account.save
-        status_message = "Email alerts successfully enabled."
-      else
-        errors = [@user, @account].map { |record| record.errors.full_messages }.flatten
-        status_message = errors.join("\n")
-      end
       format.js { render "form_status", locals: { status_message: status_message } }
     end
   end
@@ -30,6 +26,14 @@ class TwitterAccountsController < ApplicationController
   end
 
   private
+
+  def try_create_account
+    if @user.save && @account.save
+      "Email alerts successfully enabled."
+    else
+      [@user, @account].flat_map { |record| record.errors.full_messages }.join("\n")
+    end
+  end
 
   def try_destroy_account
     if @user.nil?
