@@ -5,7 +5,7 @@ class TwitterAccount < ApplicationRecord
 
   validates :handle, presence: true
   validates :user, uniqueness: {
-    scope: :handle, case_sensitive: false, message: lambda(account, data) do
+    scope: :handle, case_sensitive: false, message: lambda do |account, data|
       "#{data[:value].email} is already receiving updates from #{account.handle}."
     end
   }
