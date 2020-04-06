@@ -1,7 +1,5 @@
 language: ruby
 dist: bionic
-rvm:
-  - 2.6
 script:
   - bin/rubocop
   - bin/rspec
