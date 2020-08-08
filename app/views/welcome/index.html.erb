@@ -1,45 +1,31 @@
-<div class="container-fluid" role="main">
-  <div class="jumbotron odd">
-    <div>
-      <div class="row">
-        <h1>Sign Up</h1>
-      </div>
-      <%= render "twitter_accounts/form", method: "post" %>
+<header class="grid grid-cols-2 md:grid-cols-5 p-4">
+  <h1 class="text-6xl col-span-2 md:col-span-3 my-auto"><%= link_to "Likelater", root_path %></h1>
+  <h2 class="text-5xl my-auto"><%= link_to "Login", "TODO" %></h2>
+  <h2 class="text-5xl my-auto"><%= link_to "Sign up", "TODO" %></h2>
+</header>
+
+<div class="p-4">
+  <p class="text-xl">
+    Use Likelater and never forget to read a link you see on Twitter ever again.
+  </p>
+  <p class="text-xl">
+    Likelater gathers all of the tweets that you've liked that contain a link. It makes them
+    easily available to you on your dashboard, and sends you a daily email with a recap of
+    the links you've liked that day.
+  </p>
+  <div class="grid gap-4 md:grid-cols-2">
+    <div class="col-span-1">
+      <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Not holding back, eh? &quot;It is not illegal for Apple to own a mall and rent space, nor is it illegal for Apple to own the only mall. What is illegal is exploiting the fact that it owns the only mall to charge excessively high pricing which harms competitors&quot; <a href="https://t.co/giJtHEgHox">https://t.co/giJtHEgHox</a></p>&mdash; Ars Technica (@arstechnica) <a href="https://twitter.com/arstechnica/status/1292138485244145665?ref_src=twsrc%5Etfw">August 8, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
+    </div>
+    <div class="hidden md:block">
+      <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Central Park will soon unveil its first sculpture depicting nonfictional female figures. “The fact that nobody even noticed that women were missing in Central Park — what does that say about the invisibility of women?” <a href="https://t.co/yYkQoX8VDG">https://t.co/yYkQoX8VDG</a></p>&mdash; The New York Times (@nytimes) <a href="https://twitter.com/nytimes/status/1292214025267433478?ref_src=twsrc%5Etfw">August 8, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script> 
     </div>
   </div>
 </div>
-
-<div class="container-fluid">
-  <div class="jumbotron even">
-    <div>
-      <div class="row">
-        <span class="about">
-          <p>
-            Sign up for Likelater and we will send you a reminder email every day containing all of the links in your liked tweets for the day. 
-          </p>
-          <p>
-            Click the unsubscribe link in any of the emails to remove yourself from our list, we'll be sorry to see you go!
-          </p>
-        </span>
-      </div>
-      <div class="row">
-        <span class="tweet col-md-4 col-xs-12">
-          <blockquote class="twitter-tweet"><p lang="en" dir="ltr"><a href="https://twitter.com/hashtag/SmartCity?src=hash&amp;ref_src=twsrc%5Etfw">#SmartCity</a> data could improve as ppl become mobile sensors - reporting on traffic, air pollution, natural disasters <a href="https://t.co/POBBtHMEAW">https://t.co/POBBtHMEAW</a></p>&mdash; Ubuntu (@ubuntu) <a href="https://twitter.com/ubuntu/status/832884877250928642?ref_src=twsrc%5Etfw">February 18, 2017</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-        </span>
-        <span class="tweet col-md-4 d-none d-md-block">
-          <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Has this rolled out to enough locales to make your weekend travel a bit saner? <a href="https://t.co/j2B9bBOCXR">https://t.co/j2B9bBOCXR</a></p>&mdash; Ars Technica (@arstechnica) <a href="https://twitter.com/arstechnica/status/832998645905682432">February 18, 2017</a></blockquote>
-        </span>
-        <span class="tweet col-md-4 d-none d-md-block">
-          <blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Provided Dragon 2 demo missions go well, SpaceX is highly confident of being able to fly US astronauts in 2018 <a href="https://t.co/usUto6QSi7">https://t.co/usUto6QSi7</a></p>&mdash; Elon Musk (@elonmusk) <a href="https://twitter.com/elonmusk/status/832863988836814848">February 18, 2017</a></blockquote>
-        </span>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="container-fluid">
-  <div class="jumbotron odd footer">
-    <p>Have any feedback? Tweet at us <a href="https://twitter.com/likelater" target="_blank">@likelater</a> or send us an email at <a href="mailto:info@likelater.io" target="_blank">info@likelater.io</a>!</p>
-
-    <p><a href="/privacy">Privacy policy</a> | <a href="/terms">Terms of service</a></p>
-  </div>
+<footer class="grid md:grid-cols-5 p-4">
+  <h3 class="md:m-auto"><a href="mailto:info@likelater.io" target="_blank">Feedback</a></h3>
+  <h3 class="md:m-auto"><a href="/privacy">Privacy</a></h3>
+  <h3 class="md:m-auto"><a href="/terms">Terms</a></h3>
+  <h3 class="md:m-auto"><a href="https://github.com/nickpwhite/likelater">GitHub</a></h3>
+  <h3 class="md:m-auto"><a href="https://twitter.com/likelater">Twitter</a></h3>
 </div>
