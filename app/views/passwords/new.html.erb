@@ -1,0 +1,24 @@
+<div id="clearance" class="p-4">
+  <h2 class="text-3xl"><%= t(".title") %></h2>
+
+  <%= form_for :password, url: passwords_path do |form| %>
+    <div class="grid gap-4">
+      <p><%= t(".description") %></p>
+
+      <div>
+        <div>
+          <%= form.label :email, class: "text-lg" %>
+        </div>
+        <div>
+          <%= form.text_field :email, type: "email", class: "border border-gray-400 rounded" %>
+        </div>
+      </div>
+
+      <div>
+        <div>
+          <%= form.submit class: "p-1" %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
