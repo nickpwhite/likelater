@@ -1,0 +1,33 @@
+<%= form_for :session, url: session_path do |form| %>
+  <div class="grid gap-4">
+    <% if @failure %>
+      <p class="text-red-500">Invalid email or password</p>
+    <% end %>
+
+    <div class="grid grid-rows-2">
+      <div>
+        <%= form.label :email, class: "text-lg" %>
+      </div>
+      <div>
+        <%= form.text_field :email, type: "email", class: "border border-gray-400 rounded" %>
+      </div>
+    </div>
+
+    <div class="grid grid-rows-2">
+      <div>
+        <%= form.label :password, class: "text-lg" %>
+      </div>
+      <div>
+        <%= form.password_field :password, class: "border border-gray-400 rounded" %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.submit class: "p-1" %>
+    </div>
+
+    <div class="other-links">
+      <%= link_to t(".forgot_password"), new_password_path %>
+    </div>
+  </div>
+<% end %>

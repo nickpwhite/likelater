@@ -10,6 +10,24 @@
   </head>
 
   <body>
+    <header class="grid grid-cols-2 md:grid-cols-5 p-4">
+      <h1 class="text-6xl col-span-2 md:col-span-3 my-auto"><%= link_to "Likelater", root_path %></h1>
+      <% if signed_in? %>
+        <h2 class="text-5xl my-auto"><%= link_to "Logout", session_path, method: :delete %></h2>
+      <% else %>
+        <h2 class="text-5xl my-auto"><%= link_to "Login", new_session_path %></h2>
+        <h2 class="text-5xl my-auto"><%= link_to "Sign up", new_user_path %></h2>
+      <% end %>
+    </header>
+
     <%= yield %>
+
+    <footer class="grid md:grid-cols-5 p-4">
+      <h3 class="md:m-auto"><a href="mailto:info@likelater.io" target="_blank">Feedback</a></h3>
+      <h3 class="md:m-auto"><a href="/privacy">Privacy</a></h3>
+      <h3 class="md:m-auto"><a href="/terms">Terms</a></h3>
+      <h3 class="md:m-auto"><a href="https://github.com/nickpwhite/likelater">GitHub</a></h3>
+      <h3 class="md:m-auto"><a href="https://twitter.com/likelater">Twitter</a></h3>
+    </footer>
   </body>
 </html>
