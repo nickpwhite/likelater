@@ -9,7 +9,6 @@ gem "pg", "~> 1.2.2"
 gem "puma", "~> 4.3"
 gem "rails", "~> 6.0"
 gem "sass-rails", ">= 6"
-gem "turbolinks", "~> 5"
 gem "twitter", "~> 7"
 gem "webpacker", "~> 4.0"
 
