@@ -31,3 +31,13 @@
 
 en:
   hello: "Hello world"
+  user_mailer:
+    one_time_password_reset:
+      opening: "We recently implemented user accounts for all of our users. This allows us to add
+        more features like the ability to get updates for private accounts, a dashboard where you
+        can view all of your likes in real time, and more. Click the link below to set a password on
+        your account and get access to these and other features we add in the future."
+      link_text: "Set my password"
+      closing: "If you do not set a password, the daily email may stop sending at any time. If you
+        encounter any issues setting a password, please contact us by replying to this email or
+        emailing, at any time,"

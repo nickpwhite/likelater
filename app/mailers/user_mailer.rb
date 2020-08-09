@@ -14,6 +14,19 @@ class UserMailer < ApplicationMailer
     mail(to: @user.email, subject: "Daily link recap")
   end
 
+  def one_time_password_reset
+    @user = params[:user]
+
+    unless @user.encrypted_password.nil?
+      logger.info "#{@user.email} already has a password, no need to reset it"
+      return
+    end
+
+    @user.forgot_password!
+
+    mail(to: @user.email, subject: "Set your Likelater password")
+  end
+
   private
 
   def handles_to_tweets
