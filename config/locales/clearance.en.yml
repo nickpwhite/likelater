@@ -4,6 +4,7 @@ en:
     models:
       clearance_mailer:
         change_password: Change your password
+        email_confirmation: Confirm your email
   clearance_mailer:
     change_password:
       closing: If you didn't request this, ignore this email. Your password has
@@ -55,6 +56,7 @@ en:
   sessions:
     form:
       forgot_password: Forgot password?
+      resend_confirmation: Resend confirmation email?
       sign_up: Sign up
     new:
       title: Sign in

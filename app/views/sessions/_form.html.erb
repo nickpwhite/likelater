@@ -1,7 +1,7 @@
 <%= form_for :session, url: session_path do |form| %>
   <div class="grid gap-4">
-    <% if @failure %>
-      <p class="text-red-500">Invalid email or password</p>
+    <% if @failure_message %>
+      <p class="text-red-500"><%= @failure_message %></p>
     <% end %>
 
     <div class="grid grid-rows-2">
@@ -28,6 +28,7 @@
 
     <div class="other-links">
       <%= link_to t(".forgot_password"), new_password_path %>
+      <%= link_to t(".resend_confirmation"), new_confirmation_email_path %>
     </div>
   </div>
 <% end %>

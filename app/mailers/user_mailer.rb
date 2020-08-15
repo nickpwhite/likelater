@@ -27,6 +27,11 @@ class UserMailer < ApplicationMailer
     mail(to: @user.email, subject: "Set your Likelater password")
   end
 
+  def email_confirmation(user)
+    @user = user
+    mail(to: @user.email, subject: "Confirm your email")
+  end
+
   private
 
   def handles_to_tweets

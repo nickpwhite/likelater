@@ -41,3 +41,6 @@ en:
       closing: "If you do not set a password, the daily email may stop sending at any time. If you
         encounter any issues setting a password, please contact us by replying to this email or
         emailing, at any time,"
+    email_confirmation:
+      opening: "Please click the link below to confirm your email address."
+      link_text: "Confirm my email"

@@ -8,7 +8,7 @@ class SessionsController < Clearance::SessionsController
       if status.success?
         redirect_back_or url_after_create
       else
-        @failure = true
+        @failure_message = status.failure_message
         render :new
       end
     end
