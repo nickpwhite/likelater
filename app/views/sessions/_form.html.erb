@@ -9,7 +9,8 @@
         <%= form.label :email, class: "text-lg" %>
       </div>
       <div>
-        <%= form.text_field :email, type: "email", class: "border border-gray-400 rounded" %>
+        <%= form.text_field :email, type: "email", class: "border border-gray-400 rounded",
+          required: true %>
       </div>
     </div>
 
@@ -18,7 +19,8 @@
         <%= form.label :password, class: "text-lg" %>
       </div>
       <div>
-        <%= form.password_field :password, class: "border border-gray-400 rounded" %>
+        <%= form.password_field :password, class: "border border-gray-400 rounded",
+          required: true %>
       </div>
     </div>
 
