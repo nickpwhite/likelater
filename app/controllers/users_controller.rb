@@ -11,10 +11,11 @@ class UsersController < Clearance::UsersController
 
   def create
     @user = user_from_params
+    @user.email_confirmation_token = Clearance::Token.new
 
     if @user.save
-      sign_in @user
-      redirect_back_or url_after_create
+      UserMailer.email_confirmation(@user).deliver_later
+      redirect_to root_path, notice: "Confirm your email address to log in"
     else
       render :new
     end

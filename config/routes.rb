@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :email_confirmations, param: :email_confirmation_token, only: [:show]
+  resources :confirmation_emails, only: [:new, :create]
   resources :passwords, controller: "clearance/passwords", only: [:new, :create]
   resource :session, only: [:new, :create, :destroy]
 

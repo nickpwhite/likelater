@@ -1,0 +1,19 @@
+<div class="p-4">
+  <h2 class="text-3xl">Resend Confirmation Email</h2>
+
+  <%= form_with url: confirmation_emails_url, model: @user, local: true do |form| %>
+    <div class="grid gap-4">
+      <div class="grid grid-rows-2">
+        <div>
+          <%= form.label :email, class: "text-lg" %>
+        </div>
+        <div>
+          <%= form.text_field :email, type: "email", class: "border border-gray-400 rounded" %>
+        </div>
+      </div>
+      <div>
+        <%= form.submit class: "p-1" %>
+      </div>
+    </div>
+  <% end %>
+</div>

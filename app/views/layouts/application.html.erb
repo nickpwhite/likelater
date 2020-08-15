@@ -13,12 +13,27 @@
     <header class="grid grid-cols-2 md:grid-cols-5 p-4">
       <h1 class="text-6xl col-span-2 md:col-span-3 my-auto"><%= link_to "Likelater", root_path %></h1>
       <% if signed_in? %>
-        <h2 class="text-5xl my-auto"><%= link_to "Logout", session_path, method: :delete %></h2>
+        <h2 class="text-xl mt-auto"><%= current_user.email %></h2>
+        <h2 class="text-xl mt-auto"><%= link_to "Logout", session_path, method: :delete %></h2>
       <% else %>
         <h2 class="text-5xl my-auto"><%= link_to "Login", new_session_path %></h2>
         <h2 class="text-5xl my-auto"><%= link_to "Sign up", new_user_path %></h2>
       <% end %>
+      <hr class="col-span-5">
     </header>
+
+    <% flash.each do |type, msg| %>
+      <% if type == 'notice' %>
+        <% color = "green" %>
+      <% elsif type == 'alert' %>
+        <% color = "red" %>
+      <% end %>
+      <% classes = %W(bg-#{color}-100 border border-#{color}-400 text-#{color}-700 mx-4 px-4 py-3 rounded relative) %>
+
+      <div class="<%= classes.join(" ")%>" role="alert">
+        <%= "#{msg}" %>
+      </div>
+    <% end %>
 
     <%= yield %>
 
