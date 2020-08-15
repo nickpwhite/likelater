@@ -7,4 +7,9 @@ namespace :backfill do
       user.update_attribute(:email_confirmation_token, Clearance::Token.new)
     end
   end
+
+  desc "Backfill a password for users without one"
+  task password: :environment do
+    User.where(encrypted_password: nil).each { |user| user.update_password(Clearance::Token.new) }
+  end
 end
