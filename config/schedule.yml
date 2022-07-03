@@ -1,0 +1,4 @@
+---
+send_update_job:
+  cron: "0 2 * * *"
+  class: "SendUpdateJob"
