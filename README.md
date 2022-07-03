@@ -5,11 +5,13 @@ links. To use Likelater, visit [likelater.io](https://www.likelater.io).
 
 ## Requirements
 Likelater is developed and tested against:
-- Ruby 2.6.6
-- Rails 6.0
+- Ruby 2.7.6
+- Rails 6.1
 
 It also requires the following dependencies:
 - Bundler
+- NodeJS
+- Yarn
 - Postgresql
 
 ## Getting Started
