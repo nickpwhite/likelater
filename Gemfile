@@ -11,6 +11,8 @@ gem "postmark-rails", "~> 0.22"
 gem "puma", "~> 4.3"
 gem "rails", "~> 6.0"
 gem "sass-rails", ">= 6"
+gem "sidekiq", "~> 6.5"
+gem "sidekiq-cron", "~> 1.6"
 gem "twitter", "~> 7"
 gem "webpacker", "~> 5.0"
 

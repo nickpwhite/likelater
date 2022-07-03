@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require 'sidekiq/web'
+require 'sidekiq/cron/web'
+
 Rails.application.routes.draw do
   resources :email_confirmations, param: :email_confirmation_token, only: [:show]
   resources :confirmation_emails, only: [:new, :create]
@@ -17,4 +20,6 @@ Rails.application.routes.draw do
   delete 'twitter_accounts', to: 'twitter_accounts#destroy'
 
   root 'welcome#index'
+
+  mount Sidekiq::Web => "/sidekiq"
 end
