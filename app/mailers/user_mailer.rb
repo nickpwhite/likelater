@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class UserMailer < ApplicationMailer
+  default from: "hello@likelater.io"
+
   def likes_update
     @user = params[:user]
     @accounts = @user.twitter_accounts
@@ -11,7 +13,7 @@ class UserMailer < ApplicationMailer
       return
     end
 
-    mail(to: @user.email, subject: "Daily link recap")
+    mail(to: @user.email, subject: "Daily link recap", message_stream: "outbound")
   end
 
   def one_time_password_reset
