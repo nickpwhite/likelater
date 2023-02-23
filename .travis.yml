@@ -1,5 +1,0 @@
-language: ruby
-dist: bionic
-script:
-  - bin/rubocop
-  - bin/rspec

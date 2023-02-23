@@ -4,9 +4,10 @@
     <title>Likelater</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
 
-    <%= javascript_pack_tag 'application' %>
-    <%= stylesheet_pack_tag 'application' %>
+    <%= stylesheet_link_tag 'application', 'data-turbo_track': 'reload' %>
+    <%= javascript_importmap_tags %>
   </head>
 
   <body>
@@ -14,7 +15,7 @@
       <h1 class="text-6xl col-span-2 md:col-span-3 my-auto"><%= link_to "Likelater", root_path %></h1>
       <% if signed_in? %>
         <h2 class="text-xl mt-auto"><%= current_user.email %></h2>
-        <h2 class="text-xl mt-auto"><%= link_to "Logout", session_path, method: :delete %></h2>
+        <h2 class="text-xl mt-auto"><%= link_to "Logout", session_path, data: { "turbo-method": :delete } %></h2>
       <% else %>
         <h2 class="text-5xl my-auto"><%= link_to "Login", new_session_path %></h2>
         <h2 class="text-5xl my-auto"><%= link_to "Sign up", new_user_path %></h2>

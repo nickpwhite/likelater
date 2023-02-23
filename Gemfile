@@ -6,15 +6,19 @@ ruby "2.7.6"
 
 gem "bootsnap", ">= 1.4.2", require: false
 gem "clearance", "~> 2.2"
+gem "importmap-rails"
+gem "net-http"
 gem "pg", "~> 1.2.2"
 gem "postmark-rails", "~> 0.22"
 gem "puma", "~> 4.3"
-gem "rails", "~> 6.0"
-gem "sass-rails", ">= 6"
+gem "rails", "~> 7.0.4"
 gem "sidekiq", "~> 6.5"
 gem "sidekiq-cron", "~> 1.6"
+gem "sprockets-rails"
+gem "stimulus-rails"
+gem "tailwindcss-rails"
+gem "turbo-rails"
 gem "twitter", "~> 7"
-gem "webpacker", "~> 5.0"
 
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console

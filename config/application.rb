@@ -20,5 +20,6 @@ module Likelater
       api_token: ENV["POSTMARK_API_TOKEN"],
     }
     config.action_mailer.preview_path = "#{Rails.root}/spec/mailers/previews"
+    config.active_record.legacy_connection_handling = false
   end
 end
