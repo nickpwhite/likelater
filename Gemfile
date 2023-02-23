@@ -5,7 +5,7 @@ source "https://rubygems.org"
 ruby "2.7.6"
 
 gem "bootsnap", ">= 1.4.2", require: false
-gem "clearance", "~> 2.2"
+gem "clearance", "~> 2.5"
 gem "pg", "~> 1.2.2"
 gem "postmark-rails", "~> 0.22"
 gem "puma", "~> 4.3"
